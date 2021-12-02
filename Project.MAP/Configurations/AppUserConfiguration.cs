@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Project.MAP.Configurations
 {
-    class AppUserConfiguration:BaseConfiguration<AppUser>
+    public class AppUserConfiguration:BaseConfiguration<AppUser>
     {
         public override void Configure(EntityTypeBuilder<AppUser> builder)
         {
