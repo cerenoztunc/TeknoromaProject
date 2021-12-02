@@ -15,15 +15,15 @@ namespace Project.COMMON.CustomValidations
             List<IdentityError> errors = new List<IdentityError>();
             if (password.ToLower().Contains(user.UserName.ToLower()))
             {
-                errors.Add(new IdentityError() { Code = "PasswordContainsUserName", Description = "Password can't contain UserName" });
+                errors.Add(new IdentityError() { Code = "PasswordContainsUserName", Description = "Şifre kullanıcını adını içermemelidir!" });
             }
             if (password.ToLower().Contains(user.Email.ToLower()))
             {
-                errors.Add(new IdentityError() { Code = "PasswordContainsEmail", Description = "Password can't contain Email adress" });
+                errors.Add(new IdentityError() { Code = "PasswordContainsEmail", Description = "Şifre mail adresi içermemelidir!" });
             }
             if (password.ToLower().Contains("1234"))
             {
-                errors.Add(new IdentityError() { Code = "PasswordContainsConsecutive", Description = "Password can't contain consecutive number" });
+                errors.Add(new IdentityError() { Code = "PasswordContainsConsecutive", Description = "Şifre ardışık sayı (örn:1234) içermemelidir!" });
             }
 
             if (errors.Count == 0)

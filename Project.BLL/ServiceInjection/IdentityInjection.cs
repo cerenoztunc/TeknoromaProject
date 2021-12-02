@@ -21,7 +21,7 @@ namespace Project.BLL.ServiceInjection
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequiredLength = 8;
-            }).AddPasswordValidator<CustomPasswordValidator>();
+            }).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>();
             return services;
         }
     }
