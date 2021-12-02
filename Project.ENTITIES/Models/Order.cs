@@ -8,11 +8,6 @@ namespace Project.ENTITIES.Models
 {
     public class Order:BaseEntity
     {
-        //public string ShipAddress { get; set; }
-        //public decimal Freight { get; set; } //taşıma ücreti
-        //public string ShipName { get; set; }
-        //public string ShipCity { get; set; }
-        //public string ShipCountry { get; set; }
         public int CustomerId { get; set; }
         public int AppUserId { get; set; }
 

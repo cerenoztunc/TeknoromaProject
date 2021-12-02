@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Project.COMMON.CustomValidations;
+using Project.DAL.Context;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,14 @@ namespace Project.BLL.ServiceInjection
     {
         public static IServiceCollection AddIdentityService(this IServiceCollection services)
         {
-            services.AddIdentity<AppUser, AppRole>(opt =>
+            services.AddIdentity<AppUser, IdentityRole<int>>(opt =>
             {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequiredLength = 8;
-            }).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>();
+            }).AddEntityFrameworkStores<MyContext>().AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>();
             return services;
         }
     }

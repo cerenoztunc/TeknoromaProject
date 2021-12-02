@@ -22,7 +22,7 @@ namespace Project.MAP.Configurations
             builder.Property(x => x.Discontinued).IsRequired();
             builder.HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId);
             builder.HasOne(p => p.Supplier).WithMany(s => s.Products).HasForeignKey(p => p.SupplierId);
-            builder.HasMany<OrderDetail>().WithOne().HasForeignKey(x => x.ProductId).IsRequired();
+            //builder.HasMany<OrderDetail>().WithOne().HasForeignKey(x => x.ProductId).IsRequired();
 
             builder.ToTable("Products");
 

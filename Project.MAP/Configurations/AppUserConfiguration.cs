@@ -24,7 +24,7 @@ namespace Project.MAP.Configurations
 
             builder.ToTable("AppUsers");
 
-            builder.HasMany<AppUserRole>().WithOne().HasForeignKey(ar => ar.UserId).IsRequired();
+            //builder.HasOne(au => au.AppRole).WithMany(ar => ar.AppUsers).HasForeignKey(au=>au.AppRoleId);
         }
     }
 }

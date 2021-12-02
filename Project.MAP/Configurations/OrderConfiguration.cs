@@ -20,7 +20,7 @@ namespace Project.MAP.Configurations
             builder.ToTable("Orders");
             builder.HasOne(o => o.AppUser).WithMany(au => au.Orders).HasForeignKey(o => o.AppUserId);
             builder.HasOne(o => o.Customer).WithMany(c => c.Orders).HasForeignKey(o => o.CustomerId);
-            builder.HasMany<OrderDetail>().WithOne().HasForeignKey(x => x.OrderId).IsRequired();
+            //builder.HasMany<OrderDetail>().WithOne().HasForeignKey(x => x.OrderId).IsRequired();
 
         }
     }
