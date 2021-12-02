@@ -31,9 +31,8 @@ namespace Project.UI
             services.AddControllersWithViews();
             services.AddDbContextService();
             services.AddIdentityService();
-            services.AddScoped<IUserValidator<AppUser>, CustomUserValidator>();
-            services.AddScoped<IPasswordValidator<AppUser>, CustomPasswordValidator>();
-            services.AddScoped<IdentityErrorDescriber, CustomIdentityErrorDescriber>();
+            services.AddRepManServices();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
