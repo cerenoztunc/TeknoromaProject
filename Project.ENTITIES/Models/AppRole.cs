@@ -9,22 +9,17 @@ using System.Threading.Tasks;
 
 namespace Project.ENTITIES.Models
 {
-    public class AppUser:IdentityUser<int>,IEntity
+    public class AppRole:IdentityRole<int>,IEntity
     {
         public DateTime CreatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public DataStatus Status { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime BirthDate { get; set; }
-        public string Picture { get; set; }
-        public Gender Gender { get; set; }
-        public AppUser()
+        public AppRole()
         {
             CreatedDate = DateTime.Now;
             Status = DataStatus.Inserted;
         }
-        public virtual List<Order> Orders { get; set; }
+
     }
 }

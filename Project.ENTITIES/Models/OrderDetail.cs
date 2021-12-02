@@ -8,8 +8,8 @@ namespace Project.ENTITIES.Models
 {
     public class OrderDetail:BaseEntity
     {
-        public int OrderID { get; set; }
-        public int ProductID { get; set; }
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
         public decimal UnitPrice { get; set; }
         public short Quantity { get; set; }
 

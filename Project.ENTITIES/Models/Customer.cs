@@ -22,7 +22,6 @@ namespace Project.ENTITIES.Models
         public string Country { get; set; }
         public string PostalCode { get; set; }
 
-
         public Customer()
         {
             CreatedDate = DateTime.Now;

@@ -11,7 +11,6 @@ namespace Project.ENTITIES.Models
         public string ProductName { get; set; }
         public decimal UnitPrice { get; set; }
         public short UnitsInStock { get; set; }
-        public int MyProperty { get; set; }
         public int CategoryId { get; set; }
         public int SupplierId { get; set; }
         public bool Discontinued { get; set; } //ürün hala satılıyor mu
@@ -21,5 +20,6 @@ namespace Project.ENTITIES.Models
         //Relational Properties
         public virtual Category Category { get; set; }
         public virtual Supplier Supplier { get; set; }
+        public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 }
