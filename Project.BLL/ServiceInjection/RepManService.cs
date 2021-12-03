@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Project.COMMON.CustomValidations;
+using Project.BLL.ManagerServices.Abstracts;
+using Project.BLL.ManagerServices.Concretes;
+using Project.BLL.ServiceInjection.CustomValidations;
 using Project.DAL.Abstracts.Repositories;
 using Project.DAL.Repositories.Concretes;
 using Project.DAL.UnitOfWorks;
@@ -30,6 +32,9 @@ namespace Project.BLL.ServiceInjection
             services.AddScoped<IUserValidator<AppUser>, CustomUserValidator>();
             services.AddScoped<IPasswordValidator<AppUser>, CustomPasswordValidator>();
             services.AddScoped<IdentityErrorDescriber, CustomIdentityErrorDescriber>();
+
+            //Managers
+            services.AddScoped<IProductManager, ProductManager>();
 
             return services;
 

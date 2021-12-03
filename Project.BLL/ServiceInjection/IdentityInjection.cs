@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Project.COMMON.CustomValidations;
+using Project.BLL.ServiceInjection.CustomValidations;
 using Project.DAL.Context;
 using Project.ENTITIES.Models;
 using System;

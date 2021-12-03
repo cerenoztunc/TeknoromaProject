@@ -1,0 +1,35 @@
+﻿@model Project.ENTITIES.DTOs.ProductListDto
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="slides">
+    
+    <div class="slide" id="3">
+        <div class="content third-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="owl-carousel owl-theme">
+                        @foreach (var item in Model.Products)
+                        {
+                            <div class="col-md-12">
+                                <div class="featured-item">
+                                    <a href=""><img src="~/home/assets/images/item-01.jpg" alt=""></a>
+                                    <div class="down-content">
+                                        <h4>@item.ProductName</h4>
+                                        <h6>@item.UnitPrice</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

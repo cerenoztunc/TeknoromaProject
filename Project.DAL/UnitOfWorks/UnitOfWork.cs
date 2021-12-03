@@ -14,13 +14,19 @@ namespace Project.DAL.UnitOfWorks
     public class UnitOfWork : IUnitOfWork
     {
         private readonly MyContext _db;
-        UserManager<AppUser> _userManager;
-        SignInManager<AppUser> _signInManager;
+        private UserManager<AppUser> _userManager;
+        private SignInManager<AppUser> _signInManager;
         private CategoryRepository _categoryRepository;
         private CustomerRepository _customerRepository;
         private OrderDetailRepository _orderDetailRepository;
         private SupplierRepository _supplierRepository;
         private AppUserRepository _appUserRepository;
+        private ProductRepository _productRepository;
+        public UnitOfWork(MyContext db)
+        {
+            _db = db;
+        }
+
         public ICategoryRepository Categories => _categoryRepository ??= new CategoryRepository(_db);
 
         public ICustomerRepository Customers => _customerRepository ??= new CustomerRepository(_db);
@@ -30,6 +36,7 @@ namespace Project.DAL.UnitOfWorks
         public ISupplierRepository Suppliers => _supplierRepository ??= new SupplierRepository(_db);
 
         public IAppUserRepository AppUsers => _appUserRepository ??= new AppUserRepository(_db, _userManager,_signInManager);
+        public IProductRepository Products => _productRepository ??= new ProductRepository(_db);
 
         public async ValueTask DisposeAsync()
         {

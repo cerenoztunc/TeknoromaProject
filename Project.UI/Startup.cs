@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Project.BLL.ServiceInjection;
-using Project.COMMON.CustomValidations;
 using Project.DAL.Context;
 using Project.ENTITIES.Models;
 using System;
