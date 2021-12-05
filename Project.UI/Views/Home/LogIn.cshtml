@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "LogIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form class="form-signin" action="index.html">
+    <h2 class="form-signin-heading">TEKNOROMA | GİRİŞ YAP</h2>
+    <div class="login-wrap">
+        <input type="text" class="form-control" placeholder="Email Adresi" autofocus>
+        <input type="password" class="form-control" placeholder="Şifre">
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me"> Beni Hatırla
+            <span class="pull-right">
+                <a data-toggle="modal" href="#myModal"> Şifremi Unuttum</a>
+
+            </span>
+        </label>
+        <button class="btn btn-lg btn-login btn-block" type="submit">Giriş Yap</button>
+       
+    </div>
+
+    <!-- Modal -->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Şifremi Unuttum</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Şifreni sıfırlamak istediğiniz E-Mail adresini giriniz</p>
+                    <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">Kapat</button>
+                    <button class="btn btn-success" type="button">Gönder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal -->
+
+</form>
+

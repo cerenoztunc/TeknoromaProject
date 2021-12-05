@@ -11,11 +11,10 @@ using System.Threading.Tasks;
 
 namespace Project.DAL.Context
 {
-    public class MyContext : IdentityDbContext<AppUser, IdentityRole<int>, int>
+    public class MyContext : IdentityDbContext<AppUser, AppRole, int>
     {
         public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
-
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +28,7 @@ namespace Project.DAL.Context
             base.OnModelCreating(builder);
         }
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<AppRole> AppRoles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }

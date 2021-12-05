@@ -10,6 +10,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="NToastNotify" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\home\" />
+    <Folder Include="Areas\Manager\Data\" />
+    <Folder Include="wwwroot\flatlab\" />
+    <Folder Include="wwwroot\template\assets\jquery-file-upload\server\php\files\thumbnail\" />
   </ItemGroup>
 
 </Project>

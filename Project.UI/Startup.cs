@@ -56,9 +56,18 @@ namespace Project.UI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "Manager",
+                    areaName: "Manager",
+                    pattern: "Manager/{controller=Home}/{action=Index}/{id?}"
+                    );
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "LogIn",
+                    pattern: "{controller=Home}/{action=LogIn}",
+                    defaults: new {controller="Home",action="LogIn"}
+                    );
+
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

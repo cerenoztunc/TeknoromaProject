@@ -1,0 +1,22 @@
+﻿@model Project.UI.Areas.Manager.Models.CreateRoleViewModel
+
+@{
+    ViewData["Title"] = "AddUser";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="CreateRole" method="post">
+    <div class="col-lg-6 offset-md-3">
+        Rol
+        <div class="form-group">
+            <label asp-for="RoleName" class="control-label"></label>
+            <input asp-for="RoleName" class="form-control" />
+            <span asp-validation-for="RoleName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Ekle" class="btn btn-shadow btn-primary" />
+    </div>
+
+</form>
+    

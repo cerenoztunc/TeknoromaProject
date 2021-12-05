@@ -40,6 +40,42 @@ namespace Project.BLL.Utilities
                 return $"{categoryName} adlı kategori başarıyla arşivden getirilmiştir.";
             }
         }
+        public static class AppUser
+        {
+            public static string NotFound(bool isPlural)
+            {
+                if (isPlural) return "Hiçbir kullanıcı bulunamadı.";
+                return "Böyle bir kullanıcı bulunamadı.";
+            }
+            public static string NotFoundById(int userId)
+            {
+                return $"{userId} kullanıcı koduna ait bir kullanıcı bulunamadı.";
+            }
+            public static string AddAsync(string userName)
+            {
+                return $"{userName} adlı kullanıcı başarıyla eklenmiştir.";
+            }
+            public static string AddAsyncError()
+            {
+                return "Kullanıcı eklenirken hata oluştu.";
+            }
+            public static string UpdateAsync(string userName)
+            {
+                return $"{userName} adlı kullanıcı başarıyla güncellenmiştir.";
+            }
+            public static string DeleteAsync(string userName)
+            {
+                return $"{userName} adlı kullanıcı başarıyla silinmiştir.";
+            }
+            public static string HardDeleteAsync(string userName)
+            {
+                return $"{userName} adlı kullanıcı başarıyla veritabanından silinmiştir.";
+            }
+            public static string UndoDelete(string userName)
+            {
+                return $"{userName} adlı kullanıcı başarıyla arşivden getirilmiştir.";
+            }
+        }
         public static class Product
         {
             public static string NotFound(bool isPlural)
