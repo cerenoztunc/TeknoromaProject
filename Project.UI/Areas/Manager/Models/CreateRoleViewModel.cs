@@ -7,7 +7,8 @@ namespace Project.UI.Areas.Manager.Models
 {
     public class CreateRoleViewModel
     {
-        public string RoleName { get; set; }
+        public string Name { get; set; }
+        public string Id { get; set; }
 
     }
 }

@@ -36,6 +36,7 @@ namespace Project.BLL.ServiceInjection
             //Managers
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<IAppUserService, AppUserManager>();
+            services.AddScoped<IAppRoleService, AppRoleManager>();
 
             return services;
 

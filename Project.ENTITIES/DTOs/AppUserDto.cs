@@ -10,5 +10,6 @@ namespace Project.ENTITIES.DTOs
     public class AppUserDto
     {
         public List<AppUser> AppUsers { get; set; }
+        public string Message { get; set; }
     }
 }

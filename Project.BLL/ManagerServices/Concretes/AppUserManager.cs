@@ -29,43 +29,44 @@ namespace Project.BLL.ManagerServices.Concretes
         }
 
 
-        public async Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AppUser user)
+        public async Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AppUser user, string password)
         {
-            var res = await _userManager.CreateAsync(user);
-            await _userManager.AddToRoleAsync(user, "admin");
-            AddAppUserDto addAppUserDto = user.Adapt<AddAppUserDto>();
-
-            if (res.Succeeded)
+            if(user.Picture == null)
             {
-                var result = new DataResult<AddAppUserDto>(ResultStatus.Success, Messages.AppUser.AddAsync(user.FirstName), addAppUserDto);
-                return result;
+                user.Picture ="/picture/profile.jpg";
+                IdentityResult addUserRes = await _userManager.CreateAsync(user, password);
+                AddAppUserDto addAppUserDto = user.Adapt<AddAppUserDto>();
+                if (addUserRes.Succeeded)
+                {
+                    return new DataResult<AddAppUserDto>(ResultStatus.Success, Messages.AppUser.AddAsync(user.FirstName), addAppUserDto);
+
+                }
+                return new DataResult<AddAppUserDto>(ResultStatus.Error, addAppUserDto);
             }
-            return new DataResult<AddAppUserDto>(ResultStatus.Error, Messages.AppUser.AddAsyncError(), addAppUserDto);
+            else
+            {
+                IdentityResult addUserRes = await _userManager.CreateAsync(user, password);
+                AddAppUserDto addAppUserDto = user.Adapt<AddAppUserDto>();
+                if (addUserRes.Succeeded)
+                {
+                    return new DataResult<AddAppUserDto>(ResultStatus.Success, Messages.AppUser.AddAsync(user.FirstName), addAppUserDto);
+
+                }
+                return new DataResult<AddAppUserDto>(ResultStatus.Error, addAppUserDto);
+            }
             
         }
-        public async Task CreateAppRoleAsync(string roleName)
-        {
-            AppRole role = new AppRole()
-            {
-                Name = roleName
-            };
-
-            var roleExist = await _roleManager.RoleExistsAsync(roleName);
-            if (roleExist)
-            {
-                await _roleManager.CreateAsync(role);
-            }
-            
-        }
-
+        
 
         public AppUserDto ListAppUserAsync()
         {
-            List<AppUser> users = UnitOfWork.AppUsers.GetAll();
+            List<AppUser> users = _userManager.Users.ToList();
+            
             return new AppUserDto
             {
-                AppUsers = users
+                AppUsers = users,
             };
+
         }
 
 

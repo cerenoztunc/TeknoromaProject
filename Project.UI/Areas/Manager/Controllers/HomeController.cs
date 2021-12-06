@@ -16,6 +16,7 @@ using Project.ENTITIES.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.DAL.Abstracts.Repositories;
 using Project.COMMON.Results.Concrete;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Project.UI.Areas.Manager.Controllers
 {
@@ -23,13 +24,18 @@ namespace Project.UI.Areas.Manager.Controllers
     public class HomeController : Controller
     {
         private readonly IAppUserService _userManager;
-
-        public HomeController(IAppUserService userManager)
+        private readonly IAppRoleService _roleManager;
+        private readonly UserManager<AppUser> userManager1;
+        private readonly RoleManager<AppRole> roleManager1;
+        public HomeController(IAppUserService userManager, IAppRoleService roleManager, UserManager<AppUser> userManager1, RoleManager<AppRole> roleManager1)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
+            this.userManager1 = userManager1;
+            this.roleManager1 = roleManager1;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var users = _userManager.ListAppUserAsync();
             if (users.AppUsers.Count > 0)
@@ -43,20 +49,21 @@ namespace Project.UI.Areas.Manager.Controllers
         }
         public IActionResult AddUser()
         {
-
             ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
-            return View();
-        }
-        public IActionResult CreateRole()
-        {
-            return View();
-        }
+            IQueryable<AppRole> roles = roleManager1.Roles;
+            List<RoleAssignViewModel> roleAssignViewModels = new List<RoleAssignViewModel>();
+            AddUserViewModel addUserViewModel = new AddUserViewModel();
+            foreach (var item in roles)
+            {
+                RoleAssignViewModel roleAssignViewModel = new RoleAssignViewModel();
+                roleAssignViewModel.RoleId = item.Id;
+                roleAssignViewModel.RoleName = item.Name;
+                roleAssignViewModels.Add(roleAssignViewModel);
 
-        [HttpPost]
-        public async Task CreateRole(CreateRoleViewModel role)
-        {
-            await _userManager.CreateAppRoleAsync(role.RoleName);
-
+                addUserViewModel.AppRoles = roleAssignViewModels;
+                
+            }
+            return View(addUserViewModel);
         }
 
         [HttpPost]
@@ -66,8 +73,16 @@ namespace Project.UI.Areas.Manager.Controllers
             {
 
                 AppUser appUser = addUserViewModel.Adapt<AppUser>();
-                var result = await _userManager.CreateAppUserAsync(appUser);
-
+                var result = await _userManager.CreateAppUserAsync(appUser, addUserViewModel.Password);
+                AppUser user = await userManager1.FindByNameAsync(appUser.UserName);
+                foreach (var item in addUserViewModel.AppRoles)
+                {
+                    if (item.Exist)
+                        await userManager1.AddToRoleAsync(user, item.RoleName);
+                    else
+                        await userManager1.RemoveFromRoleAsync(user, item.RoleName);
+                }
+                
                 if (result.ResultStatus == ResultStatus.Success)
                 {
                     return RedirectToAction("Index");
@@ -75,6 +90,16 @@ namespace Project.UI.Areas.Manager.Controllers
             }
 
             return View(addUserViewModel);
+        }
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task CreateRole(CreateRoleViewModel role)
+        {
+            await _roleManager.CreateAppRoleAsync(role.Name);
+
         }
     }
 }
