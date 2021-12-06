@@ -34,8 +34,8 @@ namespace Project.BLL.ServiceInjection
             services.AddScoped<IdentityErrorDescriber, CustomIdentityErrorDescriber>();
 
             //Managers
-            services.AddScoped<IProductManager, ProductManager>();
-            services.AddScoped<IAppUserManager, AppUserManager>();
+            services.AddScoped<IProductService, ProductManager>();
+            services.AddScoped<IAppUserService, AppUserManager>();
 
             return services;
 

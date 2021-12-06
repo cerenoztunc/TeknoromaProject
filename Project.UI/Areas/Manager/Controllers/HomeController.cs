@@ -22,9 +22,9 @@ namespace Project.UI.Areas.Manager.Controllers
     [Area("Manager")]
     public class HomeController : Controller
     {
-        private readonly IAppUserManager _userManager;
+        private readonly IAppUserService _userManager;
 
-        public HomeController(IAppUserManager userManager)
+        public HomeController(IAppUserService userManager)
         {
             _userManager = userManager;
         }

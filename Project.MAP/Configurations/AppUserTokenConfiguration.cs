@@ -1,0 +1,27 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Project.ENTITIES.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project.MAP.Configurations
+{
+    public class AppUserTokenConfiguration:BaseConfiguration<AppUserToken>
+    {
+        public override void Configure(EntityTypeBuilder<AppUserToken> builder)
+        {
+            base.Configure(builder);
+            // Composite primary key consisting of the UserId, LoginProvider and Name
+            builder.HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
+
+            // Limit the size of the composite key columns due to common DB restrictions
+            builder.Property(t => t.LoginProvider).HasMaxLength(500);
+            builder.Property(t => t.Name).HasMaxLength(500);
+
+            builder.ToTable("AppUserTokens");
+        }
+    }
+}

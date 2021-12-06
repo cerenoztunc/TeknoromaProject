@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Abstracts
 {
-    public interface IProductManager
+    public interface IProductService
     {
         Task<IDataResult<ProductListDto>> GetAllAsync();
         Task<IDataResult<ProductListDto>> GetActivesAsync();

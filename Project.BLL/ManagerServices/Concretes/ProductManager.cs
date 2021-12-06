@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Concretes
 {
-    public class ProductManager : BaseManager, IProductManager
+    public class ProductManager : BaseManager, IProductService
     {
         public ProductManager(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

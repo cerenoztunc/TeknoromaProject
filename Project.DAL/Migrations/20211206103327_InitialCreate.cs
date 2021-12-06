@@ -181,8 +181,8 @@ namespace Project.DAL.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -226,8 +226,8 @@ namespace Project.DAL.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -336,6 +336,34 @@ namespace Project.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "89bf658e-744a-4837-ac8c-a13cf6eb910b", "Manager", "MANAGER" },
+                    { 2, "aa192964-d53a-4513-9940-cb205ee3c1c0", "Branch.Manager", "BRANCH.MANAGER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Email", "EmailConfirmed", "FirstName", "Gender", "LastName", "LockoutEnabled", "LockoutEnd", "ModifiedDate", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Picture", "SecurityStamp", "Status", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, new DateTime(2021, 12, 6, 13, 33, 27, 1, DateTimeKind.Local).AddTicks(8694), "620b19de-a81a-49d7-b186-ddbf6abb7f80", new DateTime(2021, 12, 6, 13, 33, 27, 0, DateTimeKind.Local).AddTicks(2982), null, "manageruser@gmail.com", true, "Manager", 0, "User", false, null, null, "MANAGERUSER@GMAIL.COM", "MANAGERUSER", "AQAAAAEAACcQAAAAEE9n5rdjEty+JKG7mYR/uEOneiw8hIp2z4TAw+dLjMfepRMzWudD4EjHpYwCvNvqGw==", "05555555555", true, "/picture/profile.jpg", "66a127ff-ea64-4a99-92b0-c37eb07be99c", 0, false, "ManagerUser" },
+                    { 2, 0, new DateTime(2021, 12, 6, 13, 33, 27, 40, DateTimeKind.Local).AddTicks(830), "ffa4850b-b300-4218-902b-302311e2e150", new DateTime(2021, 12, 6, 13, 33, 27, 40, DateTimeKind.Local).AddTicks(802), null, "branchmanageruser@gmail.com", true, "BranchManager", 0, "User", false, null, null, "BRANCHMANAGERUSER@GMAIL.COM", "BRANCHMANAGERUSER", "AQAAAAEAACcQAAAAEH8sgac1iCkfvldT+uPpLyBz4hPxeZWjx4XWnpNocqXUgrLnH2ZYrpWPrDbLhQxEJA==", "05555555555", true, "/picture/profile.jpg", "87fb6a77-a125-4254-9274-649dcc869d7c", 0, false, "BranchManagerUser" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 2, 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

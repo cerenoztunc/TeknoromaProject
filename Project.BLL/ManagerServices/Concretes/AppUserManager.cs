@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Concretes
 {
-    public class AppUserManager : BaseManager, IAppUserManager
+    public class AppUserManager : BaseManager, IAppUserService
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;

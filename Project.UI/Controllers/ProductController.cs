@@ -10,9 +10,9 @@ namespace Project.UI.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductManager _productManager;
+        private readonly IProductService _productManager;
 
-        public ProductController(IProductManager productManager)
+        public ProductController(IProductService productManager)
         {
             _productManager = productManager;
         }

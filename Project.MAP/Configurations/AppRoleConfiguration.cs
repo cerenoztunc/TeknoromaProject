@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -8,18 +9,17 @@ using System.Threading.Tasks;
 
 namespace Project.MAP.Configurations
 {
-    public class RoleMap : BaseConfiguration<AppRole>
+    public class AppRoleConfiguration : BaseConfiguration<AppRole>
     {
-        public void Configure(EntityTypeBuilder<AppRole> builder)
+        public override void Configure(EntityTypeBuilder<AppRole> builder)
         {
+            base.Configure(builder);
+
             // Primary key
             builder.HasKey(r => r.Id);
 
-            // Index for "normalized" role name to allow efficient lookups
-            builder.HasIndex(r => r.NormalizedName).HasDatabaseName("RoleNameIndex").IsUnique();
-
             // Maps to the AspNetRoles table
-            builder.ToTable("Roles");
+            builder.ToTable("AppRoles");
 
             // A concurrency token for use with the optimistic concurrency checking
             builder.Property(r => r.ConcurrencyStamp).IsConcurrencyToken();
@@ -32,7 +32,26 @@ namespace Project.MAP.Configurations
             // Note that these relationships are configured with no navigation properties
 
             // Each Role can have many entries in the UserRole join table
-            builder.HasMany<AppRole>().WithOne().HasForeignKey(ur => ur.RoleId).IsRequired();
+            builder.HasMany<AppUserRole>().WithOne().HasForeignKey(ur => ur.RoleId).IsRequired();
+            builder.HasMany<AppRoleClaim>().WithOne().HasForeignKey(rc => rc.RoleId).IsRequired();
+
+            builder.HasData(new AppRole
+            {
+                Id = 1,
+                Name = "Manager",
+                NormalizedName = "MANAGER",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
+            new AppRole
+            {
+                Id=2,
+                Name= "Branch.Manager",
+                NormalizedName="BRANCH.MANAGER",
+                ConcurrencyStamp=Guid.NewGuid().ToString()
+            }
+           
+            );
+
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Project.DAL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,9 +46,25 @@ namespace Project.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "89bf658e-744a-4837-ac8c-a13cf6eb910b",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "aa192964-d53a-4513-9940-cb205ee3c1c0",
+                            Name = "Branch.Manager",
+                            NormalizedName = "BRANCH.MANAGER"
+                        });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.AppRoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,84 +85,6 @@ namespace Project.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.AppUser", b =>
@@ -245,6 +183,150 @@ namespace Project.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            BirthDate = new DateTime(2021, 12, 6, 13, 33, 27, 1, DateTimeKind.Local).AddTicks(8694),
+                            ConcurrencyStamp = "620b19de-a81a-49d7-b186-ddbf6abb7f80",
+                            CreatedDate = new DateTime(2021, 12, 6, 13, 33, 27, 0, DateTimeKind.Local).AddTicks(2982),
+                            Email = "manageruser@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Manager",
+                            Gender = 0,
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MANAGERUSER@GMAIL.COM",
+                            NormalizedUserName = "MANAGERUSER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE9n5rdjEty+JKG7mYR/uEOneiw8hIp2z4TAw+dLjMfepRMzWudD4EjHpYwCvNvqGw==",
+                            PhoneNumber = "05555555555",
+                            PhoneNumberConfirmed = true,
+                            Picture = "/picture/profile.jpg",
+                            SecurityStamp = "66a127ff-ea64-4a99-92b0-c37eb07be99c",
+                            Status = 0,
+                            TwoFactorEnabled = false,
+                            UserName = "ManagerUser"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            BirthDate = new DateTime(2021, 12, 6, 13, 33, 27, 40, DateTimeKind.Local).AddTicks(830),
+                            ConcurrencyStamp = "ffa4850b-b300-4218-902b-302311e2e150",
+                            CreatedDate = new DateTime(2021, 12, 6, 13, 33, 27, 40, DateTimeKind.Local).AddTicks(802),
+                            Email = "branchmanageruser@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "BranchManager",
+                            Gender = 0,
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "BRANCHMANAGERUSER@GMAIL.COM",
+                            NormalizedUserName = "BRANCHMANAGERUSER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH8sgac1iCkfvldT+uPpLyBz4hPxeZWjx4XWnpNocqXUgrLnH2ZYrpWPrDbLhQxEJA==",
+                            PhoneNumber = "05555555555",
+                            PhoneNumberConfirmed = true,
+                            Picture = "/picture/profile.jpg",
+                            SecurityStamp = "87fb6a77-a125-4254-9274-649dcc869d7c",
+                            Status = 0,
+                            TwoFactorEnabled = false,
+                            UserName = "BranchManagerUser"
+                        });
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.AppUserClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.AppUserLogin", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.AppUserRole", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 2
+                        });
+                });
+
+            modelBuilder.Entity("Project.ENTITIES.Models.AppUserToken", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("Project.ENTITIES.Models.Category", b =>
@@ -549,16 +631,16 @@ namespace Project.DAL.Migrations
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.AppRoleClaim", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                    b.HasOne("Project.ENTITIES.Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.AppUserClaim", b =>
                 {
                     b.HasOne("Project.ENTITIES.Models.AppUser", null)
                         .WithMany()
@@ -567,7 +649,7 @@ namespace Project.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.AppUserLogin", b =>
                 {
                     b.HasOne("Project.ENTITIES.Models.AppUser", null)
                         .WithMany()
@@ -576,9 +658,9 @@ namespace Project.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.AppUserRole", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                    b.HasOne("Project.ENTITIES.Models.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -591,7 +673,7 @@ namespace Project.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Project.ENTITIES.Models.AppUserToken", b =>
                 {
                     b.HasOne("Project.ENTITIES.Models.AppUser", null)
                         .WithMany()

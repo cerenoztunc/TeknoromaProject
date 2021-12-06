@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.ManagerServices.Abstracts
 {
-    public interface IAppUserManager
+    public interface IAppUserService
     {
         Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AppUser user);
         Task CreateAppRoleAsync(string roleName);

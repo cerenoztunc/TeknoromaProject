@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Project.ENTITIES.Models;
 using System;
@@ -24,7 +25,53 @@ namespace Project.MAP.Configurations
 
             builder.ToTable("AppUsers");
 
-            //builder.HasOne(au => au.AppRole).WithMany(ar => ar.AppUsers).HasForeignKey(au=>au.AppRoleId);
+            builder.HasMany<AppUserClaim>().WithOne().HasForeignKey(uc => uc.UserId).IsRequired();
+            builder.HasMany<AppUserLogin>().WithOne().HasForeignKey(ul => ul.UserId).IsRequired();
+            builder.HasMany<AppUserToken>().WithOne().HasForeignKey(ut => ut.UserId).IsRequired();
+            builder.HasMany<AppUserRole>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
+
+            var managerUser = new AppUser
+            {
+                Id = 1,
+                UserName = "ManagerUser",
+                NormalizedUserName = "MANAGERUSER",
+                Email = "manageruser@gmail.com",
+                NormalizedEmail = "MANAGERUSER@GMAIL.COM",
+                PhoneNumber = "05555555555",
+                Picture = "/picture/profile.jpg",
+                FirstName = "Manager",
+                LastName = "User",
+                BirthDate = DateTime.Now,
+                Gender = 0,
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+            managerUser.PasswordHash = CreatePasswordHash(managerUser, "12qw");
+            var branchManagerUser = new AppUser
+            {
+                Id = 2,
+                UserName = "BranchManagerUser",
+                NormalizedUserName = "BRANCHMANAGERUSER",
+                Email = "branchmanageruser@gmail.com",
+                NormalizedEmail = "BRANCHMANAGERUSER@GMAIL.COM",
+                PhoneNumber = "05555555555",
+                Picture = "/picture/profile.jpg",
+                FirstName = "BranchManager",
+                LastName = "User",
+                BirthDate = DateTime.Now,
+                Gender = 0,
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+            branchManagerUser.PasswordHash = CreatePasswordHash(branchManagerUser, "12qw");
+            builder.HasData(managerUser, branchManagerUser);
+        }
+        private string CreatePasswordHash(AppUser user, string password)
+        {
+            var passwordHasher = new PasswordHasher<AppUser>();
+            return passwordHasher.HashPassword(user, password);
         }
     }
 }
