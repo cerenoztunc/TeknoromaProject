@@ -18,6 +18,6 @@ namespace Project.ENTITIES.DTOs
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-        public string RoleName { get; set; }
+        public List<AssignRoleDto> UserRoles { get; set; } = new List<AssignRoleDto>();
     }
 }

@@ -25,14 +25,11 @@ namespace Project.UI.Areas.Manager.Controllers
     {
         private readonly IAppUserService _userManager;
         private readonly IAppRoleService _roleManager;
-        private readonly UserManager<AppUser> userManager1;
-        private readonly RoleManager<AppRole> roleManager1;
-        public HomeController(IAppUserService userManager, IAppRoleService roleManager, UserManager<AppUser> userManager1, RoleManager<AppRole> roleManager1)
+     
+        public HomeController(IAppUserService userManager, IAppRoleService roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            this.userManager1 = userManager1;
-            this.roleManager1 = roleManager1;
         }
 
         public IActionResult Index()
@@ -49,20 +46,10 @@ namespace Project.UI.Areas.Manager.Controllers
         }
         public IActionResult AddUser()
         {
-            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
-            IQueryable<AppRole> roles = roleManager1.Roles;
-            List<RoleAssignViewModel> roleAssignViewModels = new List<RoleAssignViewModel>();
+            List<AssignRoleDto> roles =_roleManager.ReturnRoles();
             AddUserViewModel addUserViewModel = new AddUserViewModel();
-            foreach (var item in roles)
-            {
-                RoleAssignViewModel roleAssignViewModel = new RoleAssignViewModel();
-                roleAssignViewModel.RoleId = item.Id;
-                roleAssignViewModel.RoleName = item.Name;
-                roleAssignViewModels.Add(roleAssignViewModel);
-
-                addUserViewModel.AppRoles = roleAssignViewModels;
-                
-            }
+            addUserViewModel.UserRoles = roles;
+            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
             return View(addUserViewModel);
         }
 
@@ -71,17 +58,8 @@ namespace Project.UI.Areas.Manager.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                AppUser appUser = addUserViewModel.Adapt<AppUser>();
-                var result = await _userManager.CreateAppUserAsync(appUser, addUserViewModel.Password);
-                AppUser user = await userManager1.FindByNameAsync(appUser.UserName);
-                foreach (var item in addUserViewModel.AppRoles)
-                {
-                    if (item.Exist)
-                        await userManager1.AddToRoleAsync(user, item.RoleName);
-                    else
-                        await userManager1.RemoveFromRoleAsync(user, item.RoleName);
-                }
+                AddAppUserDto addAppUserDto = addUserViewModel.Adapt<AddAppUserDto>();
+                var result = await _userManager.CreateAppUserAsync(addAppUserDto, addAppUserDto.Password);
                 
                 if (result.ResultStatus == ResultStatus.Success)
                 {
@@ -93,19 +71,37 @@ namespace Project.UI.Areas.Manager.Controllers
         }
         public IActionResult Roles()
         {
-            
-            return View();
+            List<AppRole> roles = _roleManager.Roles();
+            ListRoleViewModel listRoleViewModel = new ListRoleViewModel();
+            if (roles.Count < 0)
+            {
+                listRoleViewModel.Message = "Hiçbir rol bulunamamaktadır.";
+            }
+            else
+            {
+                listRoleViewModel.AppRoles = roles;
+            }
+            return View(listRoleViewModel);
         }
         public IActionResult CreateRole()
         {
-            return View();
+            CreateRoleViewModel createRoleViewModel = new CreateRoleViewModel();
+            return View(createRoleViewModel);
         }
         [HttpPost]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel role)
         {
-            await _roleManager.CreateAppRoleAsync(role.Name);
-
-            return RedirectToAction("Roles");
+            bool result  = await _roleManager.CreateAppRoleAsync(role.Name);
+            if (result)
+            {
+                return RedirectToAction("Roles");
+            }
+            else
+            {
+                role.Message = "Bu rol daha önce eklenmiştir.";
+                return View(role);
+            }
+            
         }
     }
 }

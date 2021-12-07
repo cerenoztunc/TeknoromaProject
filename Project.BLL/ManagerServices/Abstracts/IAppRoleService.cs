@@ -1,4 +1,5 @@
-﻿using Project.ENTITIES.Models;
+﻿using Project.ENTITIES.DTOs;
+using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IAppRoleService
     {
-        Task CreateAppRoleAsync(string roleName);
-        Task<List<AppRole>> Roles();
+        Task<bool> CreateAppRoleAsync(string roleName);
+        List<AppRole> Roles();
+        List<AssignRoleDto> ReturnRoles();
     }
 }

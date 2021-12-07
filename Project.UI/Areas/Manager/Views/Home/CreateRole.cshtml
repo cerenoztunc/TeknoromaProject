@@ -5,12 +5,19 @@
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
+<h4>Rol Oluşturma Formu</h4>
+<hr />
+@if (Model.Message != null)
+{
+    <div class="text-danger mt-4">
+        <p>@Model.Message</p>
+    </div>
+}
 <div class="row mt-4">
-   
+
     <div class="col-lg-6 offset-md-3">
         <form asp-action="CreateRole" method="post">
-            <h4>Rol Oluşturma Formu</h4>
-            <hr />
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -23,9 +30,9 @@
             </div>
         </form>
     </div>
-        
 
-    
+
+
 </div>
 
-    
+

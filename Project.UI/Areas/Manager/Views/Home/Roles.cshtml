@@ -1,0 +1,33 @@
+﻿@model Project.UI.Areas.Manager.Models.ListRoleViewModel
+@{
+    ViewData["Title"] = "Roles";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="mt-4">Roles List</h3>
+<hr />
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            
+            <td>Rol</td>
+            <td>
+                Sil
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AppRoles)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    <a class="btn btn-danger" asp-action="RoleDelete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

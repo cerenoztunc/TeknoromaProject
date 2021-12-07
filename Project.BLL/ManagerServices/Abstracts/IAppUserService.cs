@@ -12,7 +12,8 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IAppUserService
     {
-        Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AppUser user,string password);
+        Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password);
         public AppUserDto ListAppUserAsync();
+        Task AssignRoleAsync(AddAppUserDto addUserDto);
     }
 }
