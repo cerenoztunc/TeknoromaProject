@@ -9,6 +9,7 @@ namespace Project.UI.Areas.Manager.Models
     {
         public string Name { get; set; }
         public string Id { get; set; }
+        public string Message { get; set; }
 
     }
 }

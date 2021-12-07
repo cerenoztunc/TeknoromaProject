@@ -5,18 +5,27 @@
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-action="CreateRole" method="post">
+<div class="row mt-4">
+   
     <div class="col-lg-6 offset-md-3">
-        Rol
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Ekle" class="btn btn-shadow btn-primary" />
-    </div>
+        <form asp-action="CreateRole" method="post">
+            <h4>Rol Oluşturma Formu</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Ekle" class="btn btn-shadow btn-primary" />
 
-</form>
+            </div>
+        </form>
+    </div>
+        
+
+    
+</div>
+
     

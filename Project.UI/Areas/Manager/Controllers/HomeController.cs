@@ -91,15 +91,21 @@ namespace Project.UI.Areas.Manager.Controllers
 
             return View(addUserViewModel);
         }
+        public IActionResult Roles()
+        {
+            
+            return View();
+        }
         public IActionResult CreateRole()
         {
             return View();
         }
         [HttpPost]
-        public async Task CreateRole(CreateRoleViewModel role)
+        public async Task<IActionResult> CreateRole(CreateRoleViewModel role)
         {
             await _roleManager.CreateAppRoleAsync(role.Name);
 
+            return RedirectToAction("Roles");
         }
     }
 }

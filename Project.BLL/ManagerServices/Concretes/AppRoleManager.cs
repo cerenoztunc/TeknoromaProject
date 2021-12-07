@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.COMMON.Results.Abstract;
 using Project.DAL.UnitOfWorks;
@@ -32,6 +33,10 @@ namespace Project.BLL.ManagerServices.Concretes
             {
                  await _roleManager.CreateAsync(role);
             }
+        }
+        public List<AppRole> Roles()
+        {
+            return _roleManager.Roles.ToListAsync().Result;
         }
         
     }

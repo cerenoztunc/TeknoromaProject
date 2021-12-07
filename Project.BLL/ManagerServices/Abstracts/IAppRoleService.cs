@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project.ENTITIES.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace Project.BLL.ManagerServices.Abstracts
     public interface IAppRoleService
     {
         Task CreateAppRoleAsync(string roleName);
+        Task<List<AppRole>> Roles();
     }
 }
