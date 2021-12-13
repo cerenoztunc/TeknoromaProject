@@ -5,7 +5,12 @@
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
-
+@if (ViewBag.result == "false")
+{
+    <div class="text-danger mt-4">
+        <p>Kullanıcı güncellenemedi. Lütfen daha sonra tekrar deneyiniz.</p>
+    </div>
+}
 
 <div class="row mt-4">
     <div class="col-md-4">
@@ -47,21 +52,11 @@
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Picture" class="control-label"></label>
-                <input asp-for="Picture" class="form-control" />
-                <span asp-validation-for="Picture" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+
             @for (int i = 0; i < Model.UserRoles.Count(); i++)
             {
                 <div class="form-check">

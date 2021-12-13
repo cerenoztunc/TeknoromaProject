@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project.BLL.ManagerServices.Abstracts;
@@ -21,11 +22,13 @@ namespace Project.BLL.ManagerServices.Concretes
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public AppUserManager(IUnitOfWork unitOfWork, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : base(unitOfWork)
+        public AppUserManager(IUnitOfWork unitOfWork, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager) : base(unitOfWork)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         public async Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password)
@@ -95,13 +98,19 @@ namespace Project.BLL.ManagerServices.Concretes
         public async Task<List<AssignRoleDto>> FindUserRole(int id)
         {
             AppUser appUser = await FindUser(id);
-            IList<string> roles = await _userManager.GetRolesAsync(appUser);
+            IQueryable<AppRole> roles = _roleManager.Roles;
+            List<string> userRoles = await _userManager.GetRolesAsync(appUser) as List<string>;
             List<AssignRoleDto> assignRoleDtos = new List<AssignRoleDto>();
             UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto();
             foreach (var item in roles)
             {
                 AssignRoleDto assignRoleDto = new AssignRoleDto();
-                assignRoleDto.Name = item;
+                assignRoleDto.Id = item.Id;
+                assignRoleDto.Name = item.Name;
+                if (userRoles.Contains(item.Name))
+                    assignRoleDto.Exist = true;
+                else
+                    assignRoleDto.Exist = false;
                 assignRoleDtos.Add(assignRoleDto);
 
                 updateAppUserDto.UserRoles = assignRoleDtos;
@@ -112,13 +121,32 @@ namespace Project.BLL.ManagerServices.Concretes
         public async Task<bool> UpdateUser(UpdateAppUserDto updateAppUserDto)
         {
             AppUser appUser = await FindUser(updateAppUserDto.Id);
-            AppUser updatedUser = updateAppUserDto.Adapt<AppUser>();
-            
+            if (_userManager.Users.Any(u => u.PhoneNumber == updateAppUserDto.PhoneNumber) && appUser.PhoneNumber != updateAppUserDto.PhoneNumber)
+            {
+                return false;
+            }
+            if (appUser.Picture == null)
+            {
+                appUser.Picture = "/picture/profile.jpg";
+            }
             if (appUser != null)
             {
-                IdentityResult result = await _userManager.UpdateAsync(updatedUser);
+                appUser.BirthDate = updateAppUserDto.BirthDate;
+                appUser.Gender = updateAppUserDto.Gender;
+                appUser.UserName = updateAppUserDto.UserName;
+                appUser.FirstName = updateAppUserDto.FirstName;
+                appUser.LastName = updateAppUserDto.LastName;
+                appUser.PhoneNumber = updateAppUserDto.PhoneNumber;
+                appUser.Email = updateAppUserDto.Email;
+                appUser.ModifiedDate = DateTime.Now;
+                appUser.Status = ENTITIES.Enums.DataStatus.Updated;
+               
+                IdentityResult result = await _userManager.UpdateAsync(appUser);
                 if (result.Succeeded)
                 {
+                    await _userManager.UpdateSecurityStampAsync(appUser);
+                    await _signInManager.SignOutAsync();
+                    await _signInManager.SignInAsync(appUser, true);
                     AddAppUserDto addAppUserDto = updateAppUserDto.Adapt<AddAppUserDto>();
                     await AssignRoleAsync(addAppUserDto);
                     return true;

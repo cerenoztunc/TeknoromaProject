@@ -81,8 +81,16 @@ namespace Project.UI.Areas.Manager.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserViewModel updateUserViewModel)
         {
-            
-            return RedirectToAction("Index");
+            UpdateAppUserDto updateAppUserDto = updateUserViewModel.Adapt<UpdateAppUserDto>();
+            var result = await _userManager.UpdateUser(updateAppUserDto);
+            ViewBag.result = "true";
+            if (result)
+                return RedirectToAction("Index");
+            else
+            {
+                ViewBag.result = "false";
+                return View(updateUserViewModel);
+            }
         }
 
         public async Task<IActionResult> DeleteUser(int id)
