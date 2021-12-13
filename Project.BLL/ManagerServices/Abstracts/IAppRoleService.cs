@@ -13,5 +13,8 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<bool> CreateAppRoleAsync(string roleName);
         List<AppRole> Roles();
         List<AssignRoleDto> ReturnRoles();
+        Task DeleteRole(int id);
+        Task<AppRole> FindRole(int id);
+        Task<bool> UpdateRole(UpdateAppRoleDto updateAppRoleDto);
     }
 }

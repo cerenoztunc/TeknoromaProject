@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project.BLL.ManagerServices.Abstracts;
 using Project.COMMON.Results.Abstract;
@@ -60,6 +61,27 @@ namespace Project.BLL.ManagerServices.Concretes
 
             }
             return addAppUserDto.UserRoles;
+        }
+
+        public async Task DeleteRole(int id)
+        {
+            AppRole appRole = await FindRole(id);
+            await _roleManager.DeleteAsync(appRole);
+        }
+        public async Task<AppRole> FindRole(int id)
+        {
+            AppRole appRole = await _roleManager.FindByIdAsync(id.ToString());
+            return appRole;
+        }
+        public async Task<bool> UpdateRole(UpdateAppRoleDto updateAppRoleDto)
+        {
+            AppRole role = await FindRole(updateAppRoleDto.Id);
+            role.Name = updateAppRoleDto.Name;
+            IdentityResult result = await _roleManager.UpdateAsync(role);
+            if (result.Succeeded)
+                return true;
+            else
+                return false;
         }
     }
 }

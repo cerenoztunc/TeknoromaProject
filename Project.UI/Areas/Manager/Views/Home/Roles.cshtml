@@ -10,22 +10,28 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            
+
             <td>Rol</td>
             <td>
                 Sil
+            </td>
+            <td>
+                Güncelle
             </td>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.AppRoles)
         {
-            <tr>
-                <td>@item.Name</td>
-                <td>
-                    <a class="btn btn-danger" asp-action="RoleDelete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>@item.Name</td>
+            <td>
+                <a class="btn btn-danger" asp-action="DeleteRole" asp-route-id="@item.Id">Sil</a>
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-action="UpdateRole" asp-route-id="@item.Id">Güncelle</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

@@ -69,6 +69,27 @@ namespace Project.UI.Areas.Manager.Controllers
 
             return View(addUserViewModel);
         }
+        public async Task<IActionResult> UpdateUser(int id)
+        {
+            AppUser user= await _userManager.FindUser(id);
+            List<AssignRoleDto> roles = await _userManager.FindUserRole(id);
+            UpdateUserViewModel updateUserViewModel = user.Adapt<UpdateUserViewModel>();
+            updateUserViewModel.UserRoles = roles;
+            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
+            return View(updateUserViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(UpdateUserViewModel updateUserViewModel)
+        {
+            
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            await _userManager.DeleteUser(id);
+            return RedirectToAction("Index");
+        }
         public IActionResult Roles()
         {
             List<AppRole> roles = _roleManager.Roles();
@@ -103,5 +124,31 @@ namespace Project.UI.Areas.Manager.Controllers
             }
             
         }
+        public async Task<IActionResult> DeleteRole(int id)
+        {
+            await _roleManager.DeleteRole(id);
+            return RedirectToAction("Roles");
+        }
+        public async Task<IActionResult> UpdateRole(int id)
+        {
+            AppRole appRole = await _roleManager.FindRole(id);
+            UpdateRoleViewModel updateRoleViewModel = appRole.Adapt<UpdateRoleViewModel>();
+            return View(updateRoleViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateRole(UpdateRoleViewModel updateRoleViewModel)
+        {
+            UpdateAppRoleDto updateAppRoleDto = updateRoleViewModel.Adapt<UpdateAppRoleDto>();
+            var result = await _roleManager.UpdateRole(updateAppRoleDto);
+            ViewBag.result = "true";
+            if (result)
+                return RedirectToAction("Roles");
+            else
+            {
+                ViewBag.result = "false";
+                return View();
+            }
+        }
+
     }
 }

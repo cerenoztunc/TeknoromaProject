@@ -15,5 +15,9 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password);
         public AppUserDto ListAppUserAsync();
         Task AssignRoleAsync(AddAppUserDto addUserDto);
+        Task DeleteUser(int id);
+        Task<AppUser> FindUser(int id);
+        Task<bool> UpdateUser(UpdateAppUserDto updateAppUserDto);
+        Task<List<AssignRoleDto>> FindUserRole(int id);
     }
 }

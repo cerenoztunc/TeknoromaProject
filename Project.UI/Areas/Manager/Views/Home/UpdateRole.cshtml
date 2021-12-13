@@ -1,0 +1,34 @@
+﻿@model Project.UI.Areas.Manager.Models.UpdateRoleViewModel
+
+@{
+    ViewData["Title"] = "UpdateRole";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+@if (ViewBag.result == "false")
+{
+    <div class="text-danger mt-4">
+        <p>Rol güncellenemedi. Lütfen daha sonra tekrar deneyiniz.</p>
+    </div>
+}
+
+<div class="row mt-4">
+    <h4>Rol Güncelle</h4>
+    <hr />
+    <div class="col-md-4">
+        <form asp-area="Manager" asp-controller="Home" asp-action="UpdateRole" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Güncelle" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

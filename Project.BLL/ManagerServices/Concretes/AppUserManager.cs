@@ -28,7 +28,6 @@ namespace Project.BLL.ManagerServices.Concretes
             _roleManager = roleManager;
         }
 
-
         public async Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password)
         {
             AppUser user = userDto.Adapt<AppUser>();
@@ -83,7 +82,53 @@ namespace Project.BLL.ManagerServices.Concretes
 
         }
 
+        public async Task DeleteUser(int id)
+        {
+            AppUser user = await _userManager.FindByIdAsync(id.ToString());
+            await _userManager.DeleteAsync(user);
+        }
+        public async Task<AppUser> FindUser(int id)
+        {
+            AppUser appUser = await _userManager.FindByIdAsync(id.ToString());
+            return appUser;
+        }
+        public async Task<List<AssignRoleDto>> FindUserRole(int id)
+        {
+            AppUser appUser = await FindUser(id);
+            IList<string> roles = await _userManager.GetRolesAsync(appUser);
+            List<AssignRoleDto> assignRoleDtos = new List<AssignRoleDto>();
+            UpdateAppUserDto updateAppUserDto = new UpdateAppUserDto();
+            foreach (var item in roles)
+            {
+                AssignRoleDto assignRoleDto = new AssignRoleDto();
+                assignRoleDto.Name = item;
+                assignRoleDtos.Add(assignRoleDto);
 
+                updateAppUserDto.UserRoles = assignRoleDtos;
+
+            }
+            return updateAppUserDto.UserRoles;
+        }
+        public async Task<bool> UpdateUser(UpdateAppUserDto updateAppUserDto)
+        {
+            AppUser appUser = await FindUser(updateAppUserDto.Id);
+            AppUser updatedUser = updateAppUserDto.Adapt<AppUser>();
+            
+            if (appUser != null)
+            {
+                IdentityResult result = await _userManager.UpdateAsync(updatedUser);
+                if (result.Succeeded)
+                {
+                    AddAppUserDto addAppUserDto = updateAppUserDto.Adapt<AddAppUserDto>();
+                    await AssignRoleAsync(addAppUserDto);
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
 
     }
 }
