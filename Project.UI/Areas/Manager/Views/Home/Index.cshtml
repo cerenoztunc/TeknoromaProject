@@ -39,9 +39,12 @@
                     <td>@item.Email</td>
                     <td user-roles="@item.Id"></td>
                     <td>
-                        <a class="btn btn-success" asp-area="Manager" asp-controller="Home" asp-action="DeleteUser" asp-route-id="@item.Id">
+                        <a class="btn btn-danger" asp-area="Manager" asp-controller="Home" asp-action="DeleteUser" asp-route-id="@item.Id">
                              Sil
                         </a>
+                        
+                    </td>
+                    <td>
                         <a class="btn btn-success" asp-area="Manager" asp-controller="Home" asp-action="UpdateUser" asp-route-id="@item.Id">
                             Güncelle
                         </a>

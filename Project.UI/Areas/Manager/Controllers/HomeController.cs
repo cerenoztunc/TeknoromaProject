@@ -49,7 +49,6 @@ namespace Project.UI.Areas.Manager.Controllers
             List<AssignRoleDto> roles =_roleManager.ReturnRoles();
             AddUserViewModel addUserViewModel = new AddUserViewModel();
             addUserViewModel.UserRoles = roles;
-            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
             return View(addUserViewModel);
         }
 
@@ -66,7 +65,6 @@ namespace Project.UI.Areas.Manager.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
             return View(addUserViewModel);
         }
         public async Task<IActionResult> UpdateUser(int id)
@@ -81,16 +79,19 @@ namespace Project.UI.Areas.Manager.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserViewModel updateUserViewModel)
         {
-            UpdateAppUserDto updateAppUserDto = updateUserViewModel.Adapt<UpdateAppUserDto>();
-            var result = await _userManager.UpdateUser(updateAppUserDto);
-            ViewBag.result = "true";
-            if (result)
-                return RedirectToAction("Index");
-            else
+            ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
+            var errors = ModelState.Select(x => x.Value.Errors);
+            if (ModelState.IsValid)
             {
-                ViewBag.result = "false";
-                return View(updateUserViewModel);
+                UpdateAppUserDto updateAppUserDto = updateUserViewModel.Adapt<UpdateAppUserDto>();
+                var result = await _userManager.UpdateUser(updateAppUserDto);
+                ViewBag.result = "true";
+                if (result)
+                    return RedirectToAction("Index");
+                else
+                    ViewBag.result = "false";
             }
+            return View(updateUserViewModel);
         }
 
         public async Task<IActionResult> DeleteUser(int id)
@@ -120,16 +121,21 @@ namespace Project.UI.Areas.Manager.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel role)
         {
-            bool result  = await _roleManager.CreateAppRoleAsync(role.Name);
-            if (result)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Roles");
+                bool result = await _roleManager.CreateAppRoleAsync(role.Name);
+                if (result)
+                {
+                    return RedirectToAction("Roles");
+                }
+                else
+                {
+                    role.Message = "Bu rol daha önce eklenmiştir.";
+                    return View(role);
+                }
             }
             else
-            {
-                role.Message = "Bu rol daha önce eklenmiştir.";
                 return View(role);
-            }
             
         }
         public async Task<IActionResult> DeleteRole(int id)
@@ -146,16 +152,22 @@ namespace Project.UI.Areas.Manager.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateRole(UpdateRoleViewModel updateRoleViewModel)
         {
-            UpdateAppRoleDto updateAppRoleDto = updateRoleViewModel.Adapt<UpdateAppRoleDto>();
-            var result = await _roleManager.UpdateRole(updateAppRoleDto);
-            ViewBag.result = "true";
-            if (result)
-                return RedirectToAction("Roles");
-            else
+            if (ModelState.IsValid)
             {
-                ViewBag.result = "false";
-                return View();
+                UpdateAppRoleDto updateAppRoleDto = updateRoleViewModel.Adapt<UpdateAppRoleDto>();
+                var result = await _roleManager.UpdateRole(updateAppRoleDto);
+                ViewBag.result = "true";
+                if (result)
+                    return RedirectToAction("Roles");
+                else
+                {
+                    ViewBag.result = "false";
+                    return View();
+                }
             }
+            else
+                return View(updateRoleViewModel);
+            
         }
 
     }

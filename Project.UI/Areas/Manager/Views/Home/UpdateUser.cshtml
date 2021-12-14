@@ -57,30 +57,33 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
+            <label asp-for="@Model.UserRoles" class="control-label"></label>
+
             @for (int i = 0; i < Model.UserRoles.Count(); i++)
             {
-                <div class="form-check">
+                 <div class="form-check form-control">
+
                     <input type="checkbox" class="form-check-input" asp-for="@Model.UserRoles[i].Exist" />
                     <label asp-for="@Model.UserRoles[i].Exist" class="form-check-label">@Model.UserRoles[i].Name</label>
 
                     <input type="hidden" asp-for="@Model.UserRoles[i].Name" />
                     <input type="hidden" asp-for="@Model.UserRoles[i].Id" />
                 </div>
-            }
+             }
+        <hr />
+                <div class="form-group">
+                    <label class="control-label">Picture</label>
+                    <div class="col-sm-3">
+                        <img style="width:50%; height:50%;" class="rounded-circle" src="~/picture/profile.jpg" />
+                    </div>
+                    <input type="file" name="userPicture" />
 
-            <div class="form-group">
-                <label class="control-label">Picture</label>
-                <div class="col-sm-3">
-                    <img style="width:50%; height:50%;" class="rounded-circle" src="~/picture/profile.jpg" />
                 </div>
-                <input type="file" name="userPicture" />
+                <div class="form-group">
+                    <input type="submit" value="Güncelle" class="btn btn-shadow btn-primary" />
+                </div>
 
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Güncelle" class="btn btn-shadow btn-primary" />
-            </div>
-
-        </form>
+            </form>
     </div>
 </div>
 
