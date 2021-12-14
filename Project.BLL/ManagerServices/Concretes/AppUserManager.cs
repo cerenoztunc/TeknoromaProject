@@ -38,7 +38,7 @@ namespace Project.BLL.ManagerServices.Concretes
             AppUser user = userDto.Adapt<AppUser>();
             if (userPicture == null)
             {
-                user.Picture ="/picture/profile.jpg";
+                user.Picture ="/UserPicture/profile.jpg";
                 
                 IdentityResult addUserResult = await _userManager.CreateAsync(user, password);
                 
@@ -139,7 +139,7 @@ namespace Project.BLL.ManagerServices.Concretes
                 }
                 else
                 {
-                    if (appUser.Picture != "profile.jpg")
+                    if (appUser.Picture != "/UserPicture/profile.jpg")
                     {
                         var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserPicture", appUser.Picture);
                         var toBeDeleted = oldPath.Split("/")[2];
@@ -150,6 +150,7 @@ namespace Project.BLL.ManagerServices.Concretes
                         }
                         await UploadImage.UploadImageAsync(userPicture, appUser);
                     }
+                    await UploadImage.UploadImageAsync(userPicture, appUser);
                 }
 
             }
