@@ -18,7 +18,7 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task AssignRoleAsync(AddAppUserDto addUserDto);
         Task DeleteUser(int id);
         Task<AppUser> FindUser(int id);
-        Task<bool> UpdateUser(UpdateAppUserDto updateAppUserDto);
+        Task<bool> UpdateUser(UpdateAppUserDto updateAppUserDto, IFormFile userPicture);
         Task<List<AssignRoleDto>> FindUserRole(int id);
     }
 }

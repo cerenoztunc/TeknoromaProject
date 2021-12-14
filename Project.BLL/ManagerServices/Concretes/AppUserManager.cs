@@ -16,7 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Hosting;
 namespace Project.BLL.ManagerServices.Concretes
 {
     public class AppUserManager : BaseManager, IAppUserService
@@ -24,12 +24,13 @@ namespace Project.BLL.ManagerServices.Concretes
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
-
-        public AppUserManager(IUnitOfWork unitOfWork, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager) : base(unitOfWork)
+        private readonly IHostingEnvironment _hostEnvironment;
+        public AppUserManager(IUnitOfWork unitOfWork, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager, IHostingEnvironment hostEnvironment) : base(unitOfWork)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _hostEnvironment = hostEnvironment;
         }
 
         public async Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password, IFormFile userPicture)
@@ -51,7 +52,7 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             else
             {
-                await UploadImage(userPicture, user);
+                await UploadImage.UploadImageAsync(userPicture, user);
                 IdentityResult addUserRes = await _userManager.CreateAsync(user, password);
                 await AssignRoleAsync(userDto);
                 if (addUserRes.Succeeded)
@@ -119,16 +120,38 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             return updateAppUserDto.UserRoles;
         }
-        public async Task<bool> UpdateUser(UpdateAppUserDto updateAppUserDto)
+        public async Task<bool> UpdateUser(UpdateAppUserDto updateAppUserDto, IFormFile userPicture)
         {
             AppUser appUser = await FindUser(updateAppUserDto.Id);
             if (_userManager.Users.Any(u => u.PhoneNumber == updateAppUserDto.PhoneNumber) && appUser.PhoneNumber != updateAppUserDto.PhoneNumber)
             {
                 return false;
             }
-            if (appUser.Picture == null)
+            if (userPicture != null)
             {
-                appUser.Picture = "/picture/profile.jpg";
+                if (appUser.Picture == null)
+                {
+                    if (userPicture != null && userPicture.Length > 0)
+                    {
+                        await UploadImage.UploadImageAsync(userPicture, appUser);
+                    }
+                    
+                }
+                else
+                {
+                    if (appUser.Picture != "profile.jpg")
+                    {
+                        var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserPicture", appUser.Picture);
+                        var toBeDeleted = oldPath.Split("/")[2];
+                        var fullPath = _hostEnvironment.WebRootPath + "/UserPicture/" + toBeDeleted;
+                        if (System.IO.File.Exists(fullPath))
+                        {
+                            System.IO.File.Delete(fullPath);
+                        }
+                        await UploadImage.UploadImageAsync(userPicture, appUser);
+                    }
+                }
+
             }
             if (appUser != null)
             {
@@ -158,14 +181,7 @@ namespace Project.BLL.ManagerServices.Concretes
             else
                 return false;
         }
-        public static async Task UploadImage(IFormFile userPicture, AppUser user)
-        {
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(userPicture.FileName);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserPicture", fileName);
-            using var stream = new FileStream(path, FileMode.Create);
-            await userPicture.CopyToAsync(stream);
-            user.Picture = "/UserPicture/" + fileName;
-        }
+        
 
     }
 }

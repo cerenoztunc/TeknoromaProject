@@ -79,14 +79,14 @@ namespace Project.UI.Areas.Manager.Controllers
             return View(updateUserViewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateUser(UpdateUserViewModel updateUserViewModel)
+        public async Task<IActionResult> UpdateUser(UpdateUserViewModel updateUserViewModel,IFormFile userPicture)
         {
             ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
             var errors = ModelState.Select(x => x.Value.Errors);
             if (ModelState.IsValid)
             {
                 UpdateAppUserDto updateAppUserDto = updateUserViewModel.Adapt<UpdateAppUserDto>();
-                var result = await _userManager.UpdateUser(updateAppUserDto);
+                var result = await _userManager.UpdateUser(updateAppUserDto,userPicture);
                 ViewBag.result = "true";
                 if (result)
                     return RedirectToAction("Index");
