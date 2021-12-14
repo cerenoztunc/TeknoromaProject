@@ -12,6 +12,7 @@ using Project.ENTITIES.DTOs;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,10 +32,10 @@ namespace Project.BLL.ManagerServices.Concretes
             _signInManager = signInManager;
         }
 
-        public async Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password)
+        public async Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password, IFormFile userPicture)
         {
             AppUser user = userDto.Adapt<AppUser>();
-            if (user.Picture == null)
+            if (userPicture == null)
             {
                 user.Picture ="/picture/profile.jpg";
                 
@@ -50,6 +51,7 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             else
             {
+                await UploadImage(userPicture, user);
                 IdentityResult addUserRes = await _userManager.CreateAsync(user, password);
                 await AssignRoleAsync(userDto);
                 if (addUserRes.Succeeded)
@@ -82,7 +84,6 @@ namespace Project.BLL.ManagerServices.Concretes
             {
                 AppUsers = users,
             };
-
         }
 
         public async Task DeleteUser(int id)
@@ -156,6 +157,14 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             else
                 return false;
+        }
+        public static async Task UploadImage(IFormFile userPicture, AppUser user)
+        {
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(userPicture.FileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserPicture", fileName);
+            using var stream = new FileStream(path, FileMode.Create);
+            await userPicture.CopyToAsync(stream);
+            user.Picture = "/UserPicture/" + fileName;
         }
 
     }

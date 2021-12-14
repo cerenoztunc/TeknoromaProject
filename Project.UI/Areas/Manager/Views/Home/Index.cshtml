@@ -32,17 +32,23 @@
         {
             @foreach (var item in Model.AppUsers)
             {
+                
                 <tr>
-                    <td>@item.Picture</td>
+
+                    <td>
+                        
+                        <img style="width:50%; height:50%;" class="center rounded-circle" src="@item.Picture" />
+                        
+                    </td>
                     <td>@item.FirstName</td>
                     <td>@item.LastName</td>
                     <td>@item.Email</td>
                     <td user-roles="@item.Id"></td>
                     <td>
                         <a class="btn btn-danger" asp-area="Manager" asp-controller="Home" asp-action="DeleteUser" asp-route-id="@item.Id">
-                             Sil
+                            Sil
                         </a>
-                        
+
                     </td>
                     <td>
                         <a class="btn btn-success" asp-area="Manager" asp-controller="Home" asp-action="UpdateUser" asp-route-id="@item.Id">

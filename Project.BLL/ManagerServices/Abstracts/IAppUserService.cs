@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Project.COMMON.Results.Abstract;
 using Project.ENTITIES.DTOs;
 using Project.ENTITIES.Models;
@@ -12,7 +13,7 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IAppUserService
     {
-        Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password);
+        Task<IDataResult<AddAppUserDto>> CreateAppUserAsync(AddAppUserDto userDto, string password, IFormFile userPicture);
         public AppUserDto ListAppUserAsync();
         Task AssignRoleAsync(AddAppUserDto addUserDto);
         Task DeleteUser(int id);

@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.DAL.Abstracts.Repositories;
 using Project.COMMON.Results.Concrete;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Project.UI.Areas.Manager.Controllers
 {
@@ -53,12 +54,13 @@ namespace Project.UI.Areas.Manager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(AddUserViewModel addUserViewModel)
+        public async Task<IActionResult> AddUser(AddUserViewModel addUserViewModel,IFormFile userPicture)
         {
             if (ModelState.IsValid)
             {
                 AddAppUserDto addAppUserDto = addUserViewModel.Adapt<AddAppUserDto>();
-                var result = await _userManager.CreateAppUserAsync(addAppUserDto, addAppUserDto.Password);
+               
+                var result = await _userManager.CreateAppUserAsync(addAppUserDto, addAppUserDto.Password,userPicture);
                 
                 if (result.ResultStatus == ResultStatus.Success)
                 {

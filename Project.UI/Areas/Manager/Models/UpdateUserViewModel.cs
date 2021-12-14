@@ -1,4 +1,5 @@
-﻿using Project.ENTITIES.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+using Project.ENTITIES.DTOs;
 using Project.ENTITIES.Enums;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace Project.UI.Areas.Manager.Models
         public string LastName { get; set; }
         [Display(Name = "Doğum Tarihi")]
         public DateTime BirthDate { get; set; }
+        public IFormFile PictureFile { get; set; }
         [Display(Name = "Fotoğraf")]
         public string Picture { get; set; }
         [Display(Name = "Cinsiyet")]

@@ -1,8 +1,10 @@
-﻿using Project.ENTITIES.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+using Project.ENTITIES.DTOs;
 using Project.ENTITIES.Enums;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +24,8 @@ namespace Project.UI.Areas.Manager.Models
         public string LastName { get; set; }
         [Display(Name = "Doğum Tarihi")]
         public DateTime BirthDate { get; set; }
-        [Display(Name = "Fotoğraf")]
+        [DisplayName("Fotoğraf")]
+        
         public string Picture { get; set; }
         [Display(Name = "Cinsiyet")]
         [Required(ErrorMessage = "{0} gerekli!")]
