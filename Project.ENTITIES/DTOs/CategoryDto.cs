@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Project.ENTITIES.DTOs
 {
-    public class CategoryListDto
+    public class CategoryDto
     {
+        public Category Category { get; set; }
         public string Message { get; set; }
         public List<Category> Categories { get; set; } = new List<Category>();
     }

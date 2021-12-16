@@ -358,12 +358,13 @@
                     <li class="sub-menu">
                         <a asp-area="Manager" asp-controller="Home" asp-action="Categories">
                             <i class="icon-cogs"></i>
-                            <span>Roller</span>
+                            <span>Kategoriler</span>
                         </a>
                         <ul class="sub">
                             <li><a asp-area="Manager" asp-controller="Category" asp-action="Index">Kategori Listesi</a></li>
                             <li><a asp-area="Manager" asp-controller="Category" asp-action="CreateCategory">Kategori Ekle</a></li>
-
+                            <li><a asp-area="Manager" asp-controller="Category" asp-action="GetDeletedCategories">Pasif Kategoriler Listesi</a></li>
+                            
                         </ul>
                     </li>
                     <li class="sub-menu">
