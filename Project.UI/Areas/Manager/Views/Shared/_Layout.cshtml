@@ -313,7 +313,7 @@
                         <ul class="sub">
                             <li><a asp-area="Manager" asp-controller="Home" asp-action="Index">Çalışan Listesi</a></li>
                             <li><a asp-area="Manager" asp-controller="Home" asp-action="AddUser">Çalışan Ekle</a></li>
-                            
+
                             <li><a asp-area="Manager" asp-controller="Home" asp-action="OldUsers">Eski Çalışanlar</a></li>
                         </ul>
                     </li>
@@ -350,9 +350,20 @@
                             <span>Roller</span>
                         </a>
                         <ul class="sub">
-                            <li><a asp-area="Manager" asp-controller="Home" asp-action="Roles">Rol Listesi</a></li>
-                            <li><a asp-area="Manager" asp-controller="Home" asp-action="CreateRole">Rol Ekle</a></li>
-                           
+                            <li><a asp-area="Manager" asp-controller="Home" asp-action="Roles">Pozisyon Listesi</a></li>
+                            <li><a asp-area="Manager" asp-controller="Home" asp-action="CreateRole">Pozisyon Ekle</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a asp-area="Manager" asp-controller="Home" asp-action="Categories">
+                            <i class="icon-cogs"></i>
+                            <span>Roller</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a asp-area="Manager" asp-controller="Category" asp-action="Index">Kategori Listesi</a></li>
+                            <li><a asp-area="Manager" asp-controller="Category" asp-action="CreateCategory">Kategori Ekle</a></li>
+
                         </ul>
                     </li>
                     <li class="sub-menu">

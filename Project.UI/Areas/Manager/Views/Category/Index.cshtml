@@ -1,49 +1,35 @@
-﻿@model AppUserDto
-
+﻿@model CategoryListDto
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="mt-4">Çalışan Listesi</h3>
+<h3 class="mt-4">Kategori Listesi</h3>
 <table class="table table-bordered table-striped table-responsive">
     <thead>
         <tr>
-            <th>Fotoğraf</th>
-            <th>Adı</th>
-            <th>Soyadı</th>
-            <th>Email</th>
-            <th>Roles</th>
-            <th>Sil</th>
-            <th>Güncelle</th>
-
+            <th>Kategori Adı</th>
+            <th>Açıklama</th>
+            
         </tr>
     </thead>
     <tbody>
-        @if (Model.AppUsers.Count() <= 0)
+        @if (Model.Categories.Count() <= 0)
         {
             <tr>
                 <td colspan="3">
-                    @ViewBag.error
+                    @Model.Message
                 </td>
             </tr>
         }
         else
         {
-            @foreach (var item in Model.AppUsers)
+            @foreach (var item in Model.Categories)
             {
-                
-                <tr>
 
-                    <td>
-                        
-                        <img style="width:50%; height:50%;" class="center rounded-circle" src="@item.Picture" />
-                        
-                    </td>
-                    <td>@item.FirstName</td>
-                    <td>@item.LastName</td>
-                    <td>@item.Email</td>
-                    <td user-roles="@item.Id"></td>
+                <tr>
+                    <td>@item.CategoryName</td>
+                    <td>@item.Description</td>
                     <td>
                         <a class="btn btn-danger" asp-area="Manager" asp-controller="Home" asp-action="DeleteUser" asp-route-id="@item.Id">
                             Sil
@@ -63,3 +49,5 @@
 
 
 </table>
+
+
