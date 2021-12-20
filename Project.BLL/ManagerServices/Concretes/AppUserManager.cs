@@ -17,6 +17,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Project.ENTITIES.Enums;
+
 namespace Project.BLL.ManagerServices.Concretes
 {
     public class AppUserManager : BaseManager, IAppUserService
@@ -79,7 +81,7 @@ namespace Project.BLL.ManagerServices.Concretes
         }
         public AppUserDto ListAppUserAsync()
         {
-            List<AppUser> users = _userManager.Users.ToList();
+            List<AppUser> users = _userManager.Users.Where(x=>x.Status == DataStatus.Inserted || x.Status == DataStatus.Updated).ToList();
             
             return new AppUserDto
             {
@@ -90,7 +92,31 @@ namespace Project.BLL.ManagerServices.Concretes
         public async Task DeleteUser(int id)
         {
             AppUser user = await _userManager.FindByIdAsync(id.ToString());
-            await _userManager.DeleteAsync(user);
+            user.DeletedDate = DateTime.Now;
+            user.Status = ENTITIES.Enums.DataStatus.Deleted;
+            await _userManager.UpdateAsync(user);
+        }
+        public async Task<AppUserDto> GetDeletedUsersAsync()
+        {
+            var deletedUsers = _userManager.Users.Where(x => x.Status == ENTITIES.Enums.DataStatus.Deleted).ToList();
+            AppUserDto appUserDto = new AppUserDto();
+            if(deletedUsers.Count > -1)
+            {
+                appUserDto.AppUsers = deletedUsers;
+            }
+            else
+            {
+                appUserDto.Message = "Herhangi bir eski çalışan bulunmamaktadır";
+            }
+            return appUserDto;
+            
+        }
+        public async Task MakeUserActiveAysnc(int id)
+        {
+            AppUser appUser = _userManager.Users.Where(x => x.Id == id).FirstOrDefault();
+            appUser.ModifiedDate = DateTime.Now;
+            appUser.Status = ENTITIES.Enums.DataStatus.Updated;
+            await _userManager.UpdateAsync(appUser);
         }
         public async Task<AppUser> FindUser(int id)
         {

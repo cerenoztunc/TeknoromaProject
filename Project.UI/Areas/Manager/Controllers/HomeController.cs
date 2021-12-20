@@ -45,6 +45,16 @@ namespace Project.UI.Areas.Manager.Controllers
             }
                 
         }
+        public async Task<IActionResult> OldUsers()
+        {
+            AppUserDto deletedUsers = await _userManager.GetDeletedUsersAsync();
+            return View(deletedUsers);
+        }
+        public async Task<IActionResult> MakeUserActive(int id)
+        {
+            await _userManager.MakeUserActiveAysnc(id);
+            return RedirectToAction("Index");
+        }
         public IActionResult AddUser()
         {
             List<AssignRoleDto> roles =_roleManager.ReturnRoles();

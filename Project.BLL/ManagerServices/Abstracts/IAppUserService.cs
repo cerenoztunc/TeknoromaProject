@@ -20,5 +20,7 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<AppUser> FindUser(int id);
         Task<bool> UpdateUser(UpdateAppUserDto updateAppUserDto, IFormFile userPicture);
         Task<List<AssignRoleDto>> FindUserRole(int id);
+        Task<AppUserDto> GetDeletedUsersAsync();
+        Task MakeUserActiveAysnc(int id);
     }
 }
