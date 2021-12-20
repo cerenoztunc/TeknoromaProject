@@ -1,0 +1,59 @@
+﻿@model SupplierDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="mt-4">Tedrikçi Listesi</h3>
+<table class="table table-bordered table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>Tedarikçi Adı</th>
+            <th>İletişim Başlığı</th>
+            <th>İletişim Kişisi</th>
+            <th>Ülke</th>
+            <th>Sil</th>
+            <th>Güncelle</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Suppliers.Count() <= 0)
+        {
+            <tr>
+                <td colspan="3">
+                    @Model.Message
+                </td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.Suppliers)
+            {
+
+                <tr>
+                    <td>@item.CompanyName</td>
+                    <td>@item.ContactTitle</td>
+                    <td>@item.ContactName</td>
+                    <td>@item.Country</td>
+                    <td>
+                        <a class="btn btn-danger" asp-area="Manager" asp-controller="Supplier" asp-action="DeleteSupplier" asp-route-id="@item.Id">
+                            Sil
+                        </a>
+
+                    </td>
+                    <td>
+                        <a class="btn btn-success" asp-area="Manager" asp-controller="Supplier" asp-action="UpdateSupplier" asp-route-id="@item.Id">
+                            Güncelle
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+
+
+</table>
+
+
