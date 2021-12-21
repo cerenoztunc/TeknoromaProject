@@ -65,7 +65,6 @@ namespace Project.UI.Areas.Manager.Controllers
                     return RedirectToAction("Index");
                 else
                     ViewBag.result = "false";
-                return View(updateCategoryViewModel);
             }
             return View(updateCategoryViewModel);
         }

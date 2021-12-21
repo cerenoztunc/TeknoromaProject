@@ -11,5 +11,10 @@ namespace Project.BLL.ManagerServices.Abstracts
     {
         Task<SupplierDto> ListSupplier();
         Task<bool> CreateSupplierAsync(AddSupplierDto addSupplierDto);
+        Task<bool> UpdateSupplierAsync(UpdateSupplierDto updateSupplierDto);
+        Task<SupplierDto> FindByIdAsync(int id);
+        Task DeleteSupplierAsync(int id);
+        Task<SupplierDto> GetOldSuppliersAsync();
+        Task MakeSupplierActiveAsync(int id);
     }
 }

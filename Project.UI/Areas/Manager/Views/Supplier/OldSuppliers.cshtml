@@ -1,10 +1,10 @@
 ﻿@model SupplierDto
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "OldSuppliers";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="mt-4">Tedarikçi Listesi</h3>
+<h3 class="mt-4">Tedrikçi Listesi</h3>
 <table class="table table-bordered table-striped table-responsive">
     <thead>
         <tr>
@@ -12,8 +12,7 @@
             <th>İletişim Başlığı</th>
             <th>İletişim Kişisi</th>
             <th>Ülke</th>
-            <th>Sil</th>
-            <th>Güncelle</th>
+            <th>Aktif Et</th>
 
         </tr>
     </thead>
@@ -37,16 +36,12 @@
                     <td>@item.ContactName</td>
                     <td>@item.Country</td>
                     <td>
-                        <a class="btn btn-danger" asp-area="Manager" asp-controller="Supplier" asp-action="DeleteSupplier" asp-route-id="@item.Id">
-                            Sil
+                        <a class="btn btn-danger" asp-area="Manager" asp-controller="Supplier" asp-action="MakeSupplierActive" asp-route-id="@item.Id">
+                            Aktif Et
                         </a>
 
                     </td>
-                    <td>
-                        <a class="btn btn-success" asp-area="Manager" asp-controller="Supplier" asp-action="UpdateSupplier" asp-route-id="@item.Id">
-                            Güncelle
-                        </a>
-                    </td>
+                    
                 </tr>
             }
 

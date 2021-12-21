@@ -2,6 +2,7 @@
 using Project.BLL.ManagerServices.Abstracts;
 using Project.DAL.UnitOfWorks;
 using Project.ENTITIES.DTOs;
+using Project.ENTITIES.Enums;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -43,5 +44,53 @@ namespace Project.BLL.ManagerServices.Concretes
                 return true;
             }
         }
+        public async Task<bool> UpdateSupplierAsync(UpdateSupplierDto updateSupplierDto)
+        {
+            List<Supplier> suppliers = UnitOfWork.Suppliers.GetActives();
+            SupplierDto oldSupplier = await FindByIdAsync(updateSupplierDto.Id);
+            Supplier supplier = updateSupplierDto.Adapt<Supplier>();
+            if (suppliers.Where(x => x.CompanyName == supplier.CompanyName).Any() && oldSupplier.Supplier.CompanyName != supplier.CompanyName)
+                return false;
+            else
+            {
+                UnitOfWork.Suppliers.Update(supplier);
+                await UnitOfWork.SaveAysnc();
+                return true;
+            }
+        }
+        public async Task<SupplierDto> FindByIdAsync(int id)
+        {
+            Supplier supplier = UnitOfWork.Suppliers.Find(id);
+            SupplierDto supplierDto = new SupplierDto
+            {
+                Supplier = supplier
+            };
+            return supplierDto;
+        }
+        public async Task DeleteSupplierAsync(int id)
+        {
+            UnitOfWork.Suppliers.Delete(UnitOfWork.Suppliers.Find(id));
+            await UnitOfWork.SaveAysnc();
+        }
+        public async Task<SupplierDto> GetOldSuppliersAsync()
+        {
+            List<Supplier> suppliers = UnitOfWork.Suppliers.GetPassives();
+            SupplierDto supplierDto = new SupplierDto();
+            if (suppliers.Count > 0)
+                supplierDto.Suppliers = suppliers;
+            else
+                supplierDto.Message = "Herhangi bir pasif tedarikçi bulunmamaktadır";
+
+            return supplierDto;
+        }
+        public async Task MakeSupplierActiveAsync(int id)
+        {
+            Supplier passiveSupplier = UnitOfWork.Suppliers.Find(id);
+            passiveSupplier.Status = DataStatus.Updated;
+            passiveSupplier.ModifiedDate = DateTime.Now;
+            await UnitOfWork.SaveAysnc();
+        }
+
+
     }
 }

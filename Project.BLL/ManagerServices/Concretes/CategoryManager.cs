@@ -60,8 +60,9 @@ namespace Project.BLL.ManagerServices.Concretes
         public async Task<bool> UpdateCategoryAsync(UpdateCategoryDto updateCategoryDto)
         {
             List<Category> categories = UnitOfWork.Categories.GetActives();
+            CategoryDto oldCategory = await FindByIdAsync(updateCategoryDto.Id);
             Category category = updateCategoryDto.Adapt<Category>();
-            if (categories.Where(x => x.CategoryName == category.CategoryName).Any())
+            if (categories.Where(x => x.CategoryName == category.CategoryName).Any() && oldCategory.Category.CategoryName != category.CategoryName)
             {
                 return false;
             }
