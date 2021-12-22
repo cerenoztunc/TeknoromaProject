@@ -9,7 +9,7 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface ISupplierService
     {
-        Task<SupplierDto> ListSupplier();
+        Task<SupplierDto> ListSupplierAsync();
         Task<bool> CreateSupplierAsync(AddSupplierDto addSupplierDto);
         Task<bool> UpdateSupplierAsync(UpdateSupplierDto updateSupplierDto);
         Task<SupplierDto> FindByIdAsync(int id);

@@ -22,7 +22,7 @@ namespace Project.UI.Areas.Manager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            SupplierDto suppliers = await _supplierService.ListSupplier();
+            SupplierDto suppliers = await _supplierService.ListSupplierAsync();
             return View(suppliers);
         }
         public IActionResult CreateSupplier()

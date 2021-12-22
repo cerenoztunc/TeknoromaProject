@@ -19,7 +19,7 @@ namespace Project.BLL.ManagerServices.Concretes
 
         }
 
-        public async Task<SupplierDto> ListSupplier()
+        public async Task<SupplierDto> ListSupplierAsync()
         {
             List<Supplier> suppliers = UnitOfWork.Suppliers.GetActives();
             SupplierDto supplierDto = new SupplierDto();

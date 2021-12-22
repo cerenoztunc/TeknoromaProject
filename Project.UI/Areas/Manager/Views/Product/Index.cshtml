@@ -1,0 +1,50 @@
+﻿@model ProductListDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="mt-4">Ürün Listesi</h3>
+<table class="table table-bordered table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>Kategori Adı</th>
+            <th>Ürün Adı</th>
+            <th>Tedarikçi Adı</th>
+            <th>Stok</th>
+            <th>Fiyat</th>
+            <th>Sil</th>
+            <th>Güncelle</th>
+
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model.Products)
+            {
+
+                <tr>
+                    <td>@item.Category.CategoryName</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Supplier.CompanyName</td>
+                    <td>@item.UnitsInStock</td>
+                    <td>@item.UnitPrice</td>
+                    <td>
+                        <a class="btn btn-danger" asp-area="Manager" asp-controller="Category" asp-action="DeleteCategory" asp-route-id="@item.Id">
+                        Sil
+                        </a>
+
+                    </td>
+                    <td>
+                        <a class="btn btn-success" asp-area="Manager" asp-controller="Category" asp-action="UpdateCategory" asp-route-id="@item.Id">
+                        Güncelle
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        
+    </tbody>
+
+
+</table>
+

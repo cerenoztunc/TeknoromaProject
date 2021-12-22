@@ -10,9 +10,7 @@ namespace Project.BLL.ManagerServices.Abstracts
 {
     public interface IProductService
     {
-        Task<IDataResult<ProductListDto>> GetAllAsync();
-        Task<IDataResult<ProductListDto>> GetActivesAsync();
-        Task<IDataResult<ProductListDto>> GetPassivesAsync();
-        Task<IDataResult<ProductListDto>> GetModifiedsAsync();
+        Task<IDataResult<ProductListDto>> ListProductAsync();
+        Task<bool> AddProductAsync(AddProductDto addProductDto);
     }
 }

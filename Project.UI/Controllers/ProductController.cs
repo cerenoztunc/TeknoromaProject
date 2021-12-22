@@ -19,7 +19,7 @@ namespace Project.UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var result = await _productManager.GetActivesAsync();
+            var result = await _productManager.ListProductAsync();
             return View(result.Data);
         }
         
