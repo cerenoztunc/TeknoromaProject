@@ -90,6 +90,16 @@ namespace Project.BLL.ManagerServices.Concretes
             passiveSupplier.ModifiedDate = DateTime.Now;
             await UnitOfWork.SaveAysnc();
         }
+        public async Task<ProductDto> GetProducts(int id)
+        {
+            Supplier supplier = UnitOfWork.Suppliers.Find(id);
+            List<Product> products = UnitOfWork.Products.Where(x => x.SupplierId == supplier.Id);
+            ProductDto productDto = new ProductDto
+            {
+                Products = products
+            };
+            return productDto;
+        }
 
 
     }

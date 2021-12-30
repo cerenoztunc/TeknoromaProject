@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Project.ENTITIES.DTOs
 {
-    public class ProductListDto : BaseDto
+    public class ProductDto
     {
-        public List<Product> Products { get; set; }
-        public int? CategoryId { get; set; }
+        public Product Product { get; set; }
+        public List<Product> Products { get; set; } = new List<Product>();
+        public string Message { get; set; }
     }
 }

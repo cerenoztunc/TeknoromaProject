@@ -16,5 +16,6 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task DeleteCategoryAsync(int id);
         Task<CategoryDto> GetDeletedCategorisAsync();
         Task MakeCategoryActiveAysnc(int id);
+        Task<ProductDto> GetProductsOfCategory(int id);
     }
 }

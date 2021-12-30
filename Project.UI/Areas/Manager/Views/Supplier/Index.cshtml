@@ -32,7 +32,12 @@
             {
 
                 <tr>
-                    <td>@item.CompanyName</td>
+                    <td>
+                        <a asp-area="Manager" asp-controller="Supplier" asp-action="GetProducts" asp-route-id="@item.Id">
+                            @item.CompanyName
+                        </a>
+                        
+                    </td>
                     <td>@item.ContactTitle</td>
                     <td>@item.ContactName</td>
                     <td>@item.Country</td>

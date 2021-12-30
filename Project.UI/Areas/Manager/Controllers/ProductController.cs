@@ -28,10 +28,8 @@ namespace Project.UI.Areas.Manager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IDataResult<ProductListDto> result = await _productService.ListProductAsync();
-            if (result.ResultStatus == ResultStatus.Success)
-                return View(result.Data);
-            return NotFound();
+            ProductDto productDto = await _productService.ListProductAsync();
+            return View(productDto);
         }
         public async Task<IActionResult> CreateProduct()
         {
@@ -59,6 +57,77 @@ namespace Project.UI.Areas.Manager.Controllers
                 }
             }
             return View(addProductViewModel);
+        }
+        public async Task<IActionResult> UpdateProduct(int id)
+        {
+            ProductDto productDto = await _productService.FindByIdProduct(id); 
+            CategoryDto categoryDto = await _categoryService.ListAsync();
+            SupplierDto supplierDto = await _supplierService.ListSupplierAsync();
+            UpdateProductViewModel updateProductViewModel = new UpdateProductViewModel
+            {
+                Id = productDto.Product.Id,
+                ProductName = productDto.Product.ProductName,
+                QuantityPerUnit = productDto.Product.QuantityPerUnit,
+                Categories = categoryDto.Categories,
+                Suppliers = supplierDto.Suppliers,
+                UnitsInStock = productDto.Product.UnitsInStock,
+                UnitsOnOrder = productDto.Product.UnitsOnOrder,
+                Discontinued = productDto.Product.Discontinued,
+                UnitPrice = productDto.Product.UnitPrice,
+                CategoryId = productDto.Product.CategoryId,
+                SupplierId = productDto.Product.SupplierId,
+                
+            };
+            return View(updateProductViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(UpdateProductViewModel updateProductViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                UpdateProductDto updateProductDto = updateProductViewModel.Adapt<UpdateProductDto>();
+                bool result = await _productService.UpdateProductAsync(updateProductDto);
+                if (result)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.result = "false";
+                    return View(updateProductViewModel);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "İşlem Başarısız!");
+            }
+            return View(updateProductViewModel);
+            
+        }
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            await _productService.DeleteProductAsync(id);
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> GetDeletedProducts()
+        {
+            ProductDto deletedProducts = await _productService.GetDeletedProductsAsync();
+            return View(deletedProducts);
+        }
+        public async Task<IActionResult> MakeProductActive(int id)
+        {
+            bool result = await _productService.MakeProductActive(id);
+            if (result)
+                return RedirectToAction("Index");
+            else
+            {
+                ProductDto productDto = new ProductDto
+                {
+                    Message = "Böyle bir ürün bulunmamaktadır"
+                };
+                return RedirectToAction("GetDeletedProducts", productDto);
+            }
+                
         }
     }
 }

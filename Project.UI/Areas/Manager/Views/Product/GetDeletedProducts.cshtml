@@ -1,10 +1,10 @@
 ﻿@model ProductDto
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "GetDeletedProducts";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="mt-4">Ürün Listesi</h3>
+<h3 class="mt-4">Eski Ürünler Listesi</h3>
 @if (Model.Message != null)
 {
     <div class="text-danger">
@@ -27,9 +27,11 @@ else
             </tr>
         </thead>
         <tbody>
+
+            else
+            {
             @foreach (var item in Model.Products)
             {
-
 
                 <tr>
                     <td>@item.Category.CategoryName</td>
@@ -38,24 +40,18 @@ else
                     <td>@item.UnitsInStock</td>
                     <td>@item.UnitPrice</td>
                     <td>
-                        <a class="btn btn-danger" asp-area="Manager" asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@item.Id">
-                            Sil
+                        <a class="btn btn-danger" asp-area="Manager" asp-controller="Product" asp-action="MakeProductActive" asp-route-id="@item.Id">
+                            Aktif Yap
                         </a>
 
-                    </td>
-                    <td>
-                        <a class="btn btn-success" asp-area="Manager" asp-controller="Product" asp-action="UpdateProduct" asp-route-id="@item.Id">
-                            Güncelle
-                        </a>
                     </td>
                 </tr>
             }
-
+            }
 
         </tbody>
-
-
     </table>
 }
+
 
 

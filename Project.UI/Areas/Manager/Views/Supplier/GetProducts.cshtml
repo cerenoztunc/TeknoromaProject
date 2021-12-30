@@ -1,10 +1,12 @@
 ﻿@model ProductDto
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "GetProducts";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="mt-4">Ürün Listesi</h3>
+<h3 class="mt-4">@ViewBag.companyName Adlı Tedarikçiye Ait Ürünler Listesi</h3>
+
+
 @if (Model.Message != null)
 {
     <div class="text-danger">
@@ -16,7 +18,6 @@ else
     <table class="table table-bordered table-striped table-responsive">
         <thead>
             <tr>
-                <th>Kategori Adı</th>
                 <th>Ürün Adı</th>
                 <th>Tedarikçi Adı</th>
                 <th>Stok</th>
@@ -32,7 +33,6 @@ else
 
 
                 <tr>
-                    <td>@item.Category.CategoryName</td>
                     <td>@item.ProductName</td>
                     <td>@item.Supplier.CompanyName</td>
                     <td>@item.UnitsInStock</td>
@@ -57,5 +57,4 @@ else
 
     </table>
 }
-
 

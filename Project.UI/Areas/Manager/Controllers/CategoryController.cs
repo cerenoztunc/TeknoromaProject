@@ -14,7 +14,6 @@ namespace Project.UI.Areas.Manager.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
-
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
@@ -82,6 +81,14 @@ namespace Project.UI.Areas.Manager.Controllers
         {
             await _categoryService.MakeCategoryActiveAysnc(id);
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> GetProducts(int id)
+        {
+            CategoryDto categoryDto = await _categoryService.FindByIdAsync(id);
+            ViewBag.categoryName = categoryDto.Category.CategoryName;
+            ProductDto productDto = await _categoryService.GetProductsOfCategory(id);
+            
+            return View(productDto);
         }
     }
 }

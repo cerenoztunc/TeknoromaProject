@@ -82,6 +82,13 @@ namespace Project.UI.Areas.Manager.Controllers
             await _supplierService.MakeSupplierActiveAsync(id);
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> GetProducts(int id)
+        {
+            SupplierDto supplierDto = await _supplierService.FindByIdAsync(id);
+            ViewBag.companyName = supplierDto.Supplier.CompanyName;
+            ProductDto productDto = await _supplierService.GetProducts(id);
+            return View(productDto);
+        }
 
     }
 }

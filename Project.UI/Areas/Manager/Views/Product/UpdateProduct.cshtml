@@ -1,24 +1,20 @@
-﻿@model Project.UI.Areas.Manager.Models.AddProductViewModel
+﻿@model Project.UI.Areas.Manager.Models.UpdateProductViewModel
 
 @{
-    ViewData["Title"] = "CreateProduct";
+    ViewData["Title"] = "UpdateProduct";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
 
-<div class="row mt-4">
-    <h4>Ürün Ekleme Formu</h4>
+<div class="row">
+    <h4>Ürün Güncelleme Formu</h4>
     <hr />
-    @if (ViewBag.result == "false")
-    {
-        <div class="text-danger mt-4">
-            <p>Bu isimde ürün bulunmaktadır!</p>
-        </div>
-    }
-    <div class="col-md-6">
-        <form asp-action="CreateProduct" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-4">
+        <form asp-action="UpdateProduct" method="post">
+            <input type="hidden" asp-for="Id" name="name" value="" />
             <input type="hidden" asp-for="Discontinued" name="name" value="false" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label"></label>
                 <input asp-for="ProductName" class="form-control" />
@@ -59,9 +55,13 @@
                 <span asp-validation-for="SupplierId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Ekle" class="btn btn-primary" />
+                <input type="submit" value="Güncelleme" class="btn btn-primary" />
             </div>
         </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 

@@ -75,9 +75,8 @@ namespace Project.BLL.ManagerServices.Concretes
         }
         public async Task DeleteCategoryAsync(int id)
         {
-            Category category = UnitOfWork.Categories.Where(x => x.Id == id).FirstOrDefault();
-            category.DeletedDate = DateTime.Now;
-            category.Status = ENTITIES.Enums.DataStatus.Deleted;
+            Category category = UnitOfWork.Categories.Find(id);
+            UnitOfWork.Categories.Delete(category);
             await UnitOfWork.SaveAysnc();
         }
         public async Task<CategoryDto> GetDeletedCategorisAsync()
@@ -90,7 +89,7 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             else
             {
-                categoryDto.Message = "Hiçbir pasif kategori bulunmamaktadır";
+                categoryDto.Message = "Bütün kategoriler aktif";
             }
            
             return categoryDto;
@@ -101,6 +100,17 @@ namespace Project.BLL.ManagerServices.Concretes
             category.ModifiedDate = DateTime.Now;
             category.Status = ENTITIES.Enums.DataStatus.Updated;
             await UnitOfWork.SaveAysnc();
+        }
+        public async Task<ProductDto> GetProductsOfCategory(int id)
+        {
+            Category category = UnitOfWork.Categories.Find(id);
+            List<Product> products = UnitOfWork.Products.GetActives();
+            List<Product> productsOfCategory = products.Where(x => x.CategoryId == category.Id).ToList();
+            ProductDto productDto = new ProductDto
+            {
+                Products = productsOfCategory
+            };
+            return productDto;
         }
     }
 }

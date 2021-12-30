@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Manager\Data\" />
+    <Folder Include="Views\Product\" />
     <Folder Include="wwwroot\flatlab\" />
     <Folder Include="wwwroot\template\assets\jquery-file-upload\server\php\files\thumbnail\" />
   </ItemGroup>
