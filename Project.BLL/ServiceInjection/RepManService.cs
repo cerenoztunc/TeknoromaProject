@@ -39,6 +39,7 @@ namespace Project.BLL.ServiceInjection
             services.AddScoped<IAppRoleService, AppRoleManager>();
             services.AddScoped<ICategoryService, CategoryManager>();
             services.AddScoped<ISupplierService, SupplierManager>();
+            services.AddScoped<IOrderDetailService, OrderDetailManager>();
 
             return services;
 
