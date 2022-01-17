@@ -11,6 +11,7 @@ namespace Project.ENTITIES.DTOs
     {
         public OrderDetail OrderDetail { get; set; }
         public List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+        public ProductDto Products { get; set; }
         public string Message { get; set; }
         
     }

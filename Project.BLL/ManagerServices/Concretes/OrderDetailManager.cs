@@ -36,5 +36,14 @@ namespace Project.BLL.ManagerServices.Concretes
             UnitOfWork.OrderDetails.Delete(orderDetail);
             await UnitOfWork.SaveAysnc();
         }
+        public async Task<OrderDetailDto> FindProductsById(int? orderId)
+        {
+            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.Where(od => od.OrderId == orderId);
+            OrderDetailDto orderDetailDto = new OrderDetailDto
+            {
+                OrderDetails = orderDetails
+            };
+            return orderDetailDto;
+        }
     }
 }

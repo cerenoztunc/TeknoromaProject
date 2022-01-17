@@ -1,0 +1,11 @@
+﻿@model OrderDetailDto
+
+@foreach (OrderDetail item in Model.OrderDetails)
+    {
+    <tr class="gradeX">
+        <td>@item.Product.Category.CategoryName</td>
+        <td>@item.Product.ProductName</td>
+        <td>@item.Product.UnitPrice</td>
+        <td>@item.Product.UnitsOnOrder</td>
+    </tr>
+    }

@@ -92,11 +92,11 @@ var Script = function () {
 
 //    tool tips
 
-    $('.tooltips').tooltip();
+    //$('.tooltips').tooltip();
 
 //    popovers
 
-    $('.popovers').popover();
+    //$('.popovers').popover();
 
 
 

@@ -29,6 +29,11 @@ namespace Project.UI.Areas.Manager.Controllers
             await _orderService.Delete(productId, orderId);
             return RedirectToAction("Index");
         }
-        
+        [HttpGet]
+        public async Task<IActionResult> DetailsOfOrder(int? orderId)
+        {
+            var detailsOfOrder = await _orderService.FindProductsById(orderId);
+            return PartialView("OrderDetailContentPartial", detailsOfOrder);
+        }
     }
 }

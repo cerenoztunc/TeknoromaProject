@@ -11,5 +11,6 @@ namespace Project.BLL.ManagerServices.Abstracts
     {
         Task<OrderDetailDto> ListOrder();
         Task Delete(int productId, int orderId);
+        Task<OrderDetailDto> FindProductsById(int? orderId);
     }
 }

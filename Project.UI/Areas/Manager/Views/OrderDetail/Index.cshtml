@@ -4,6 +4,8 @@
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
+<partial name="~/Areas/Manager/Views/OrderDetail/OrderDetailPartial.cshtml" />
+
 <h3 class="mt-4">Sipariş Listesi</h3>
 @if (Model.Message != null)
 {
@@ -50,11 +52,14 @@ else
                                 <td>@item.Quantity</td>
                                 <td>@item.UnitPrice</td>
                                 <td>
-                                    <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DetailsOfOrder" asp-route-id="@item.Id">
+                                    <button class="btn btn-primary" href="#!" data-toggle="modal" data-target="#orderDetailModal" data-product-id="@item.ProductId" data-order-id="@item.OrderId" id="showOrderDetailModal">
                                         Sipariş Detayı
-                                    </a>
+                                    </button>
+                                 
+
                                 </td>
                                 <td>
+
                                     <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DeleteOrder" asp-route-orderId="@item.OrderId" asp-route-productId="@item.ProductId">
                                         Sil
                                     </a>
@@ -78,62 +83,26 @@ else
 }
 
 
-
-
 <script type="text/javascript">
-    /* Formating function for row details */
-    function fnFormatDetails(oTable, nTr) {
-        var aData = oTable.fnGetData(nTr);
-        var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-        sOut += '<tr><td>Ürünler:</td><td> <a title="Icerik" href="/Manager/OrderDetail/ProductsOfOrder/' + aData[1] + '"> ' + aData[2] + ' </a></td></tr>';
-        sOut += '</table>';
+    /*  modal for show order details  */
+   
+        $(function () {
+            $(document).on('click', "#showOrderDetailModal", function (e) {
+                //var btn = $(e.relatedTarget);
+                //console.log(btn);
+                //var orderId = btn.data('order-id');
+                var orderId = $(this).attr('data-order-id');
+                console.log(orderId);
+                $.ajax({
+                    type: 'GET',
+                    url: '/Manager/OrderDetail/DetailsOfOrder/',
+                    data: { orderId },
+                    success: function (data) {
+                        $("#order-detail-content").html(data);
+                    }
+                });
 
-        return sOut;
-    }
-
-    $(document).ready(function () {
-        /*
-         * Insert a 'details' column to the table
-         */
-        var nCloneTh = document.createElement('th');
-        var nCloneTd = document.createElement('td');
-        nCloneTd.innerHTML = '<img src="assets/advanced-datatable/examples/examples_support/details_open.png">';
-        nCloneTd.className = "center";
-
-        $('#hidden-table-info thead tr').each(function () {
-            this.insertBefore(nCloneTh, this.childNodes[0]);
+            });
         });
 
-        $('#hidden-table-info tbody tr').each(function () {
-            this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
-        });
-
-        /*
-         * Initialse DataTables, with no sorting on the 'details' column
-         */
-        var oTable = $('#hidden-table-info').dataTable({
-            "aoColumnDefs": [
-                { "bSortable": false, "aTargets": [0] }
-            ],
-            "aaSorting": [[1, 'asc']]
-        });
-
-        /* Add event listener for opening and closing details
-         * Note that the indicator for showing which row is open is not controlled by DataTables,
-         * rather it is done here
-         */
-        $('#hidden-table-info tbody td img').live('click', function () {
-            var nTr = $(this).parents('tr')[0];
-            if (oTable.fnIsOpen(nTr)) {
-                /* This row is already open - close it */
-                this.src = "assets/advanced-datatable/examples/examples_support/details_open.png";
-                oTable.fnClose(nTr);
-            }
-            else {
-                /* Open this row */
-                this.src = "assets/advanced-datatable/examples/examples_support/details_close.png";
-                oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
-            }
-        });
-    });
 </script>
