@@ -30,5 +30,11 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             return orderDetailsDto;
         }
+        public async Task Delete(int productId, int orderId)
+        {
+            OrderDetail orderDetail = UnitOfWork.OrderDetails.FirstOrDefault(od => od.ProductId == productId && od.OrderId == orderId);
+            UnitOfWork.OrderDetails.Delete(orderDetail);
+            await UnitOfWork.SaveAysnc();
+        }
     }
 }

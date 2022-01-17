@@ -10,5 +10,6 @@ namespace Project.BLL.ManagerServices.Abstracts
     public interface IOrderDetailService
     {
         Task<OrderDetailDto> ListOrder();
+        Task Delete(int productId, int orderId);
     }
 }

@@ -24,5 +24,11 @@ namespace Project.UI.Areas.Manager.Controllers
             OrderDetailDto orderDetailDto = await _orderService.ListOrder();
             return View(orderDetailDto);
         }
+        public async Task<IActionResult> DeleteOrder(int orderId, int productId)
+        {
+            await _orderService.Delete(productId, orderId);
+            return RedirectToAction("Index");
+        }
+        
     }
 }

@@ -26,9 +26,7 @@ else
                             <th>Tarih</th>
                             <th>Müşteri Adı</th>
                             <th>Müşteri Soyadı</th>
-                            <th>Siparişteki Ürün İsimleri</th>
-                            <th>Ürün Fiyatı</th>
-                            <th>Ürün Sayısı</th>
+                            <th>Toplam Ürün Miktarı</th>
                             <th>Sipariş Tutarı</th>
                             <th>Sipariş Detayı</th>
                             <th>Sil</th>
@@ -49,20 +47,15 @@ else
                                 }
                                 <td>@item.Order.Customer.FirstName</td>
                                 <td>@item.Order.Customer.LastName</td>
-                                @foreach (var product in item.Order.OrderDetails)
-                                {
-                                    <td>@product.Product.ProductName</td>
-                                    <td>@product.Product.UnitPrice</td>
-                                }
-                                <td>@item.Product.UnitsOnOrder</td>
+                                <td>@item.Quantity</td>
                                 <td>@item.UnitPrice</td>
                                 <td>
                                     <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DetailsOfOrder" asp-route-id="@item.Id">
-                                        Siparş Detayı
+                                        Sipariş Detayı
                                     </a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DeleteOrder" asp-route-id="@item.Id">
+                                    <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DeleteOrder" asp-route-orderId="@item.OrderId" asp-route-productId="@item.ProductId">
                                         Sil
                                     </a>
                                 </td>
