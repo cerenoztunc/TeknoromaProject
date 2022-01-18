@@ -24,9 +24,9 @@ namespace Project.UI.Areas.Manager.Controllers
             OrderDetailDto orderDetailDto = await _orderService.ListOrder();
             return View(orderDetailDto);
         }
-        public async Task<IActionResult> DeleteOrder(int orderId, int productId)
+        public async Task<IActionResult> DeleteOrder(int orderId)
         {
-            await _orderService.Delete(productId, orderId);
+            await _orderService.DeleteAllAsync(orderId);
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -35,5 +35,11 @@ namespace Project.UI.Areas.Manager.Controllers
             var detailsOfOrder = await _orderService.FindProductsById(orderId);
             return PartialView("OrderDetailContentPartial", detailsOfOrder);
         }
+        public async Task<IActionResult> GetDeletedOrders()
+        {
+            var deletedOrders = await _orderService.GetDeletedOrdersAsync();
+            return View(deletedOrders);
+        }
+       
     }
 }

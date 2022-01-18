@@ -1,0 +1,66 @@
+﻿@model SupplierDto
+@{
+    ViewData["Title"] = "SupplierAct";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="mt-4">Tedarikçi Hareketi</h3>
+<table class="table table-bordered table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>Tedarikçi Adı</th>
+            <th>İletişim Kişisi</th>
+            <th>Telefon</th>
+            <th>Aylık Ürünler</th>
+            <th>Toplam Alınan Ürün</th>
+            
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Suppliers.Count() <= 0)
+        {
+            <tr>
+                <td colspan="3">
+                    @Model.Message
+                </td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.Suppliers)
+            {
+
+                <tr>
+                    <td>
+                        <a asp-area="Manager" asp-controller="Supplier" asp-action="GetProducts" asp-route-id="@item.Id">
+                            @item.CompanyName
+                        </a>
+
+                    </td>
+                    <td>@item.ContactName</td>
+                    <td>@item.Phone</td>
+                    <td>
+                        <a class="btn btn-info" asp-area="Manager" asp-controller="Supplier" asp-action="MonthlyProductsList" asp-route-id="@item.Id">
+                            Aylık Ürünler
+                        </a>
+                        
+                    </td>
+                    @foreach (var product in item.Products)
+                    {
+                        
+                    }
+                    <td>
+                        
+                        @item.Products.Count
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+
+
+</table>
+
+

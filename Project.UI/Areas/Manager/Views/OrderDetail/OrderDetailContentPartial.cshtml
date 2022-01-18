@@ -6,19 +6,25 @@
         <tr class="gradeX">
             <td>@item.Product.Category.CategoryName</td>
             <td>@item.Product.ProductName</td>
-            <td>@item.UnitPrice</td>
+            <td>@item.UnitPrice ₺</td>
             <td>@item.Quantity</td>
             <td>@(item.UnitPrice * item.Quantity)</td>
         </tr>
 
         totalPrice += item.Quantity * item.UnitPrice;
     }
+<tr>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
     <th>
         Sipariş Fiyatı:
+        @totalPrice₺
+
     </th>
-    <th>
-        @totalPrice
-    </th>
+</tr>
+    
 }
 
 

@@ -32,7 +32,6 @@ else
                             <th>Toplam Sipariş Tutarı</th>
                             <th>Sipariş Detayı</th>
                             <th>Sil</th>
-                            <th>Güncelle</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +61,7 @@ else
                                 {
                                     totalPayment += orderDetail.Quantity * orderDetail.UnitPrice;
                                 }
-                                <td>@totalPayment</td>
+                                <td>@totalPayment ₺</td>
                             }
 
                             <td>
@@ -71,15 +70,11 @@ else
                                 </button>
                             </td>
                             <td>
-                                <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DeleteOrder" asp-route-orderId="@item.Id" asp-route-productId="@item.Id">
+                                <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DeleteOrder" asp-route-orderId="@item.Id">
                                     Sil
                                 </a>
                             </td>
-                            <td>
-                                <a class="btn btn-success" asp-area="Manager" asp-controller="OrderDetail" asp-action="UpdateOrder" asp-route-id="@item.Id">
-                                    Güncelle
-                                </a>
-                            </td>
+                            
                         </tr>
                         }
 

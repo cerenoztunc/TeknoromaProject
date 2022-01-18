@@ -325,6 +325,7 @@
                         </a>
                         <ul class="sub">
                             <li><a asp-area="Manager" asp-controller="Supplier" asp-action="Index">Tedarikçi Listesi</a></li>
+                            <li><a asp-area="Manager" asp-controller="Supplier" asp-action="SupplierAct">Tedarikçi Hareket</a></li>
                             <li><a asp-area="Manager" asp-controller="Supplier" asp-action="CreateSupplier">Tedarikçi Ekle</a></li>
                             <li><a asp-area="Manager" asp-controller="Supplier" asp-action="OldSuppliers">Eski Tedarikçiler</a></li>
 
@@ -365,7 +366,17 @@
                             <li><a asp-area="Manager" asp-controller="Category" asp-action="Index">Kategori Listesi</a></li>
                             <li><a asp-area="Manager" asp-controller="Category" asp-action="CreateCategory">Kategori Ekle</a></li>
                             <li><a asp-area="Manager" asp-controller="Category" asp-action="GetDeletedCategories">Pasif Kategoriler Listesi</a></li>
-                            
+
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a asp-area="Manager" asp-controller="OrderDetail" asp-action="Index">
+                            <i class="icon-cogs"></i>
+                            <span>Siparişler</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a asp-area="Manager" asp-controller="OrderDetail" asp-action="Index">Sİpariş Listesi</a></li>
+                            <li><a asp-area="Manager" asp-controller="OrderDetail" asp-action="GetDeletedOrders">İptal Edilen Sipariş Listesi</a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">

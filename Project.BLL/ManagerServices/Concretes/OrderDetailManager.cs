@@ -1,6 +1,7 @@
 ﻿using Project.BLL.ManagerServices.Abstracts;
 using Project.DAL.UnitOfWorks;
 using Project.ENTITIES.DTOs;
+using Project.ENTITIES.Enums;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -46,17 +47,28 @@ namespace Project.BLL.ManagerServices.Concretes{
             }
             return orderDetailsDto;
         }
-        public async Task Delete(int productId, int orderId)
+        public async Task DeleteAllAsync(int orderId)
         {
-            OrderDetail orderDetail = UnitOfWork.OrderDetails.FirstOrDefault(od => od.ProductId == productId && od.OrderId == orderId);
-            UnitOfWork.OrderDetails.Delete(orderDetail);
+            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.Where(od => od.OrderId == orderId);
+            UnitOfWork.OrderDetails.DeleteRange(orderDetails);
             await UnitOfWork.SaveAysnc();
         }
         public async Task<OrderDetailDto> FindProductsById(int? orderId)
         {
             List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.Where(od => od.OrderId == orderId);
-            List<Order> orders = UnitOfWork.OrderDetails.Where(od => od.OrderId == orderId).Select(x=>x.Order).ToList();
+            List<Order> orders = orderDetails.Select(x=>x.Order).ToList();
            
+            OrderDetailDto orderDetailDto = new OrderDetailDto
+            {
+                OrderDetails = orderDetails,
+                Orders = orders
+            };
+            return orderDetailDto;
+        }
+        public async Task<OrderDetailDto> GetDeletedOrdersAsync()
+        {
+            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetPassives();
+            List<Order> orders = orderDetails.Select(x => x.Order).ToList();
             OrderDetailDto orderDetailDto = new OrderDetailDto
             {
                 OrderDetails = orderDetails,

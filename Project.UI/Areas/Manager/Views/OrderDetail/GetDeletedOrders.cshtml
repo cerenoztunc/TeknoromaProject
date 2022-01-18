@@ -1,0 +1,107 @@
+﻿@model OrderDetailDto
+@{
+    ViewData["Title"] = "GetDeletedOrders";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+
+<partial name="~/Areas/Manager/Views/OrderDetail/OrderDetailPartial.cshtml" />
+
+<h3 class="mt-4">Sipariş Listesi</h3>
+@if (Model.Message != null)
+{
+    <div class="text-danger">
+        <p>@Model.Message</p>
+    </div>
+}
+else
+{
+    <!-- page start-->
+    <section class="panel">
+        <header class="panel-heading">
+            Siparişler Listesi
+        </header>
+        <div class="panel-body">
+            <div class="adv-table">
+                <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
+                    <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Müşteri Adı</th>
+                            <th>Müşteri Soyadı</th>
+                            <th>Toplam Ürün Miktarı</th>
+                            <th>Toplam Sipariş Tutarı</th>
+                            <th>Sipariş Detayı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Order item in Model.Orders)
+                        {
+                            <tr class="gradeX">
+                                @if (item.ModifiedDate != null)
+                                {
+                                    <td>@item.ModifiedDate</td>
+                                }
+                                else
+                                {
+                                    <td>@item.CreatedDate</td>
+                                }
+                                <td>@item.Customer.FirstName</td>
+                                <td>@item.Customer.LastName</td>
+                                @{
+                                    var totalOrder = 0;
+                                    for (int i = 0; i < item.OrderDetails.Count; i++)
+                                    {
+                                        totalOrder += 1;
+                                    }
+                                    <td>@totalOrder</td>
+
+                                    decimal totalPayment = 0;
+                                    foreach (var orderDetail in item.OrderDetails)
+                                    {
+                                        totalPayment += orderDetail.Quantity * orderDetail.UnitPrice;
+                                    }
+                                    <td>@totalPayment ₺</td>
+                                }
+
+                                <td>
+                                    <button class="btn btn-primary" href="#!" data-toggle="modal" data-target="#orderDetailModal" data-order-id="@item.Id" id="showOrderDetailModal">
+                                        Sipariş Detayı
+                                    </button>
+                                </td>
+                                
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </section>
+    <!-- page end-->
+}
+
+
+<script type="text/javascript">
+    /*  modal for show order details  */
+
+    $(function () {
+        $(document).on('click', "#showOrderDetailModal", function (e) {
+            //var btn = $(e.relatedTarget);
+            //console.log(btn);
+            //var orderId = btn.data('order-id');
+            var orderId = $(this).attr('data-order-id');
+            console.log(orderId);
+            $.ajax({
+                type: 'GET',
+                url: '/Manager/OrderDetail/DetailsOfOrder/',
+                data: { orderId },
+                success: function (data) {
+                    $("#order-detail-content").html(data);
+                }
+            });
+
+        });
+    });
+
+</script>
