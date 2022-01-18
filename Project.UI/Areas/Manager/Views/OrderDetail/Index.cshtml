@@ -29,49 +29,59 @@ else
                             <th>Müşteri Adı</th>
                             <th>Müşteri Soyadı</th>
                             <th>Toplam Ürün Miktarı</th>
-                            <th>Sipariş Tutarı</th>
+                            <th>Toplam Sipariş Tutarı</th>
                             <th>Sipariş Detayı</th>
                             <th>Sil</th>
                             <th>Güncelle</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (OrderDetail item in Model.OrderDetails)
+                        @foreach (Order item in Model.Orders)
                         {
-                            <tr class="gradeX">
-                                @if (item.ModifiedDate != null)
+                        <tr class="gradeX">
+                            @if (item.ModifiedDate != null)
+                            {
+                                <td>@item.ModifiedDate</td>
+                            }
+                            else
+                            {
+                                <td>@item.CreatedDate</td>
+                            }
+                            <td>@item.Customer.FirstName</td>
+                            <td>@item.Customer.LastName</td>
+                            @{
+                                var totalOrder = 0;
+                                for (int i = 0; i < item.OrderDetails.Count; i++)
                                 {
-                                    <td>@item.ModifiedDate</td>
+                                    totalOrder += 1;
                                 }
-                                else
+                                <td>@totalOrder</td>
+
+                                decimal totalPayment = 0;
+                                foreach (var orderDetail in item.OrderDetails)
                                 {
-                                    <td>@item.CreatedDate</td>
+                                    totalPayment += orderDetail.Quantity * orderDetail.UnitPrice;
                                 }
-                                <td>@item.Order.Customer.FirstName</td>
-                                <td>@item.Order.Customer.LastName</td>
-                                <td>@item.Quantity</td>
-                                <td>@item.UnitPrice</td>
-                                <td>
-                                    <button class="btn btn-primary" href="#!" data-toggle="modal" data-target="#orderDetailModal" data-product-id="@item.ProductId" data-order-id="@item.OrderId" id="showOrderDetailModal">
-                                        Sipariş Detayı
-                                    </button>
-                                 
+                                <td>@totalPayment</td>
+                            }
 
-                                </td>
-                                <td>
-
-                                    <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DeleteOrder" asp-route-orderId="@item.OrderId" asp-route-productId="@item.ProductId">
-                                        Sil
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-success" asp-area="Manager" asp-controller="OrderDetail" asp-action="UpdateOrder" asp-route-id="@item.Id">
-                                        Güncelle
-                                    </a>
-                                </td>
-                            </tr>
+                            <td>
+                                <button class="btn btn-primary" href="#!" data-toggle="modal" data-target="#orderDetailModal" data-product-id="@item.Id" data-order-id="@item.Id" id="showOrderDetailModal">
+                                    Sipariş Detayı
+                                </button>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" asp-area="Manager" asp-controller="OrderDetail" asp-action="DeleteOrder" asp-route-orderId="@item.Id" asp-route-productId="@item.Id">
+                                    Sil
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-success" asp-area="Manager" asp-controller="OrderDetail" asp-action="UpdateOrder" asp-route-id="@item.Id">
+                                    Güncelle
+                                </a>
+                            </td>
+                        </tr>
                         }
-
 
                     </tbody>
                 </table>

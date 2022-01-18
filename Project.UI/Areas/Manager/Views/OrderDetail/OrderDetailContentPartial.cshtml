@@ -1,11 +1,24 @@
 ﻿@model OrderDetailDto
-
-@foreach (OrderDetail item in Model.OrderDetails)
+@{
+    decimal totalPrice = 0;
+    @foreach (OrderDetail item in Model.OrderDetails)
     {
-    <tr class="gradeX">
-        <td>@item.Product.Category.CategoryName</td>
-        <td>@item.Product.ProductName</td>
-        <td>@item.Product.UnitPrice</td>
-        <td>@item.Product.UnitsOnOrder</td>
-    </tr>
+        <tr class="gradeX">
+            <td>@item.Product.Category.CategoryName</td>
+            <td>@item.Product.ProductName</td>
+            <td>@item.UnitPrice</td>
+            <td>@item.Quantity</td>
+            <td>@(item.UnitPrice * item.Quantity)</td>
+        </tr>
+
+        totalPrice += item.Quantity * item.UnitPrice;
     }
+    <th>
+        Sipariş Fiyatı:
+    </th>
+    <th>
+        @totalPrice
+    </th>
+}
+
+
