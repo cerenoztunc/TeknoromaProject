@@ -118,5 +118,20 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             return supplierDto;
         }
+        public async Task<SupplierDto> AllOrderedProductsFromSuppliersAsync(int supplierId)
+        {
+            Supplier supplier = UnitOfWork.Suppliers.Find(supplierId);
+            List<Product> products = supplier.Products;
+            SupplierDto supplierDto = new SupplierDto();
+            if (products.Count > 0)
+            {
+                supplierDto.Products = products;
+            }
+            else
+            {
+                supplierDto.Message = "Hiçbir sipariş bulunmamaktadır.";
+            }
+            return supplierDto;
+        }
     }
 }

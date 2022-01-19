@@ -94,10 +94,15 @@ namespace Project.UI.Areas.Manager.Controllers
             SupplierDto supplierDto = await _supplierService.ListSupplierAsync();
             return View(supplierDto);
         }
-        public async Task<IActionResult> OrderedProductsFromSupplier(int supplierId)
+        public async Task<IActionResult> MonthlyOrderedProductsFromSupplier(int supplierId)
         {
             SupplierDto orderedProducts = await _supplierService.OrderedProductsFromSuppliersAsync(supplierId);
             return PartialView("SupplierProductsContentPartial", orderedProducts);
+        }
+        public async Task<IActionResult> AllOrderedProductsFromSupplier(int supplierId)
+        {
+            SupplierDto allOrderedProducts = await _supplierService.AllOrderedProductsFromSuppliersAsync(supplierId);
+            return PartialView("SupplierProductsContentPartial", allOrderedProducts);
         }
 
     }

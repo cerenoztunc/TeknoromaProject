@@ -1,0 +1,21 @@
+﻿@model SupplierDto
+@{
+    if (Model.Message != null)
+    {
+        <tr class="gradeX">
+            <td>@Model.Message</td>
+        </tr>
+    }
+    else
+    {
+        @foreach (Product item in Model.Products)
+        {
+            <tr class="gradeX">
+                <td>@item.Category.CategoryName</td>
+                <td>@item.ProductName</td>
+                <td>@(item.UnitsInStock+item.UnitsOnOrder)</td>
+            </tr>
+        }
+    }
+
+}

@@ -5,6 +5,7 @@
 }
 
 <partial name="~/Areas/Manager/Views/Supplier/SupplierProductsPartial.cshtml" />
+<partial name="~/Areas/Manager/Views/Supplier/SupplierAllProductsPartial.cshtml" />
 <h3 class="mt-4">Tedarikçi Hareketi</h3>
 <table class="table table-bordered table-striped table-responsive">
     <thead>
@@ -13,7 +14,7 @@
             <th>İletişim Kişisi</th>
             <th>Telefon</th>
             <th>Aylık Ürünler</th>
-            <th>Toplam Alınan Ürün</th>
+            <th>Toplam Ürünler</th>
             
 
         </tr>
@@ -43,22 +44,17 @@
                     <td>@item.Phone</td>
                     <td>
                         <button class="btn btn-primary" href="#!" data-toggle="modal" data-target="#orderedProductsModal" data-supplier-id="@item.Id"  id="showOrderedProductsModal">
-                            Aylık Ürünler
+                            Aylık Alımlar
                         </button>
                         
                     </td>
-                    @{ 
-                        var totalProducts = 0;
-                        foreach (var product in item.Products)
-                        {
-                            totalProducts += (product.UnitsOnOrder+product.UnitsInStock);
-                        }
-                    }
-                    
                     <td>
+                        <button class="btn btn-primary" href="#!" data-toggle="modal" data-target="#allOrderedProductsModal" data-supplier-id="@item.Id"  id="showAllOrderedProductsModal">
+                            Toplam Alımlar
+                        </button>
                         
-                        @totalProducts
                     </td>
+                    
                 </tr>
             }
 
@@ -79,7 +75,7 @@
                 console.log(supplierId);
                 $.ajax({
                     type: 'GET',
-                    url: '/Manager/Supplier/OrderedProductsFromSupplier/',
+                    url: '/Manager/Supplier/MonthlyOrderedProductsFromSupplier/',
                     data: { supplierId },
                     success: function (data) {
                         $("#ordered-product-content").html(data);
@@ -88,5 +84,22 @@
 
             });
         });
+    $(function () {
+        $(document).on('click', "#showAllOrderedProductsModal", function (e) {
+
+            var supplierId = $(this).attr('data-supplier-id');
+            console.log(supplierId);
+            $.ajax({
+                type: 'GET',
+                url: '/Manager/Supplier/AllOrderedProductsFromSupplier/',
+                data: { supplierId },
+                success: function (data) {
+                    $("#all-ordered-product-content").html(data);
+                }
+            });
+
+        });
+    });
+
 
 </script>
