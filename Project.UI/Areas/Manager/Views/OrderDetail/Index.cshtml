@@ -65,7 +65,7 @@ else
                             }
 
                             <td>
-                                <button class="btn btn-primary" href="#!" data-toggle="modal" data-target="#orderDetailModal" data-product-id="@item.Id" data-order-id="@item.Id" id="showOrderDetailModal">
+                                <button class="btn btn-primary" onclick="showOrderDetailModal(@item.Id)" href="#!" data-toggle="modal" data-target="#orderDetailModal" id="showOrderDetailModal">
                                     Sipariş Detayı
                                 </button>
                             </td>
@@ -91,23 +91,26 @@ else
 <script type="text/javascript">
     /*  modal for show order details  */
    
-        $(function () {
-            $(document).on('click', "#showOrderDetailModal", function (e) {
-                //var btn = $(e.relatedTarget);
-                //console.log(btn);
-                //var orderId = btn.data('order-id');
-                var orderId = $(this).attr('data-order-id');
-                console.log(orderId);
-                $.ajax({
-                    type: 'GET',
-                    url: '/Manager/OrderDetail/DetailsOfOrder/',
-                    data: { orderId },
-                    success: function (data) {
-                        $("#order-detail-content").html(data);
-                    }
-                });
+    $(function () {
+        
+    });
 
+    function showOrderDetailModal(orderId) {
+        //$(document).on('click', "#showOrderDetailModal", function (e) {
+            //var btn = $(e.relatedTarget);
+            //console.log(btn);
+            //var orderId = btn.data('order-id');
+            //var orderId = $(this).attr('data-order-id');
+            console.log(orderId);
+            $.ajax({
+                type: 'GET',
+                url: '/Manager/OrderDetail/DetailsOfOrder/',
+                data: { orderId },
+                success: function (data) {
+                    $("#order-detail-content").html(data);
+                }
             });
-        });
+        //});
+    }
 
 </script>

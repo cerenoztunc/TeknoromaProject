@@ -1,0 +1,62 @@
+﻿@model ProductDto
+@{
+    ViewData["Title"] = "StockTrackingReport";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+<h3 class="mt-4">Stok Takip Raporu</h3>
+@if (Model.Message != null)
+{
+    <div class="text-danger">
+        <p>@Model.Message</p>
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped table-responsive">
+        <thead>
+                <tr>
+                    <th class="text-center">Stok Durumu</th>
+                    <th>Kategori Adı</th>
+                    <th>Ürün Adı</th>
+                    <th>Tedarikçi</th>
+                    <th>Stok</th>
+                    <th>Fiyat</th>
+                </tr>
+            </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+
+            <tr>
+                @if (item.UnitsInStock <= 10)
+                {
+                    <td class="text-danger text-center"><i class="icon-warning-sign icon-2x "></i> Riskli</td>
+                    <td class="text-danger">@item.Category.CategoryName</td>
+                    <td class="text-danger">@item.ProductName</td>
+                    <td class="text-danger">@item.Supplier.CompanyName</td>
+                    <td class="text-danger">@item.UnitsInStock</td>
+                    <td class="text-danger">@item.UnitPrice</td>
+                }
+                else
+                {
+                    <td class="text-center"><i class="icon-ok-sign icon-2x text-success"></i> Risksiz</td>
+                    <td>@item.Category.CategoryName</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Supplier.CompanyName</td>
+                    <td>@item.UnitsInStock</td>
+                    <td>@item.UnitPrice</td>
+                }
+
+            </tr>
+            }
+
+
+        </tbody>
+
+
+    </table>
+}
+
+
+
+

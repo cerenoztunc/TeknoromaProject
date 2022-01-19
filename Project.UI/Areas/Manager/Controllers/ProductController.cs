@@ -129,5 +129,10 @@ namespace Project.UI.Areas.Manager.Controllers
             }
                 
         }
+        public async Task<IActionResult> StockTrackingReport()
+        {
+            ProductDto productDto = await _productService.SortingProductsByStock();
+            return View(productDto);
+        }
     }
 }

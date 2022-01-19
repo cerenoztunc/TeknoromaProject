@@ -59,9 +59,9 @@ namespace Project.BLL.ManagerServices.Concretes
                 return true;
             }
         }
-        public async Task<SupplierDto> FindByIdAsync(int id)
+        public async Task<SupplierDto> FindByIdAsync(int supplierId)
         {
-            Supplier supplier = UnitOfWork.Suppliers.Find(id);
+            Supplier supplier = UnitOfWork.Suppliers.Find(supplierId);
             SupplierDto supplierDto = new SupplierDto
             {
                 Supplier = supplier
@@ -91,22 +91,11 @@ namespace Project.BLL.ManagerServices.Concretes
             passiveSupplier.ModifiedDate = DateTime.Now;
             await UnitOfWork.SaveAysnc();
         }
-        public async Task<ProductDto> GetProducts(int id)
-        {
-            Supplier supplier = UnitOfWork.Suppliers.Find(id);
-            List<Product> products = UnitOfWork.Products.Where(x => x.SupplierId == supplier.Id);
-            ProductDto productDto = new ProductDto
-            {
-                Products = products
-            };
-            return productDto;
-        }
-
-        public async Task<SupplierDto> OrderedProductsFromSuppliersAsync(int supplierId)
+        public async Task<SupplierDto> GetMonthlyOrderedProductsFromSuppliersAsync(int supplierId)
         {
             Supplier supplier = UnitOfWork.Suppliers.Find(supplierId);
             List<Product> products = supplier.Products;
-            var monthlyOrderedProduct = products.Where(x=>x.CreatedDate.AddDays(30).Date > DateTime.Now).ToList();
+            var monthlyOrderedProduct = products.Where(x=>x.ReorderDate.AddDays(30).Date > DateTime.Now).ToList();
             SupplierDto supplierDto = new SupplierDto();
             if (monthlyOrderedProduct.Count > 0)
             {
@@ -118,7 +107,7 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             return supplierDto;
         }
-        public async Task<SupplierDto> AllOrderedProductsFromSuppliersAsync(int supplierId)
+        public async Task<SupplierDto> GetAllOrderedProductsFromSuppliersAsync(int supplierId)
         {
             Supplier supplier = UnitOfWork.Suppliers.Find(supplierId);
             List<Product> products = supplier.Products;

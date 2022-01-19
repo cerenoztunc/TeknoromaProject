@@ -28,12 +28,12 @@
         }
         else
         {
-            @foreach (var item in Model.Suppliers)
+            @foreach (Supplier item in Model.Suppliers)
             {
 
                 <tr>
                     <td>
-                        <a asp-area="Manager" asp-controller="Supplier" asp-action="GetProducts" asp-route-id="@item.Id">
+                        <a asp-area="Manager" asp-controller="Supplier" asp-action="GetProducts" asp-route-supplierId="@item.Id">
                             @item.CompanyName
                         </a>
                         

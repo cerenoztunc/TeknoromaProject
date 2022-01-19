@@ -16,8 +16,9 @@ namespace Project.ENTITIES.Models
         public bool Discontinued { get; set; } //satıldı mı?
         public string QuantityPerUnit { get; set; } //birim başına miktar
         public short UnitsOnOrder { get; set; } //sipariş üzerine birimler
-        public short ReorderLevel { get; set; }
+        public short ReorderAmount { get; set; }
         public string Picture { get; set; }
+        public DateTime ReorderDate { get; set; }
 
         //Relational Properties
         public virtual Category Category { get; set; }

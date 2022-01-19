@@ -110,5 +110,14 @@ namespace Project.BLL.ManagerServices.Concretes
             }
             return false;
         }
+        public async Task<ProductDto> SortingProductsByStock()
+        {
+            List<Product> products = UnitOfWork.Products.GetActives().OrderBy(x => x.UnitsInStock).ToList();
+            ProductDto productDto = new ProductDto
+            {
+                Products = products
+            };
+            return productDto;
+        }
     }
 }

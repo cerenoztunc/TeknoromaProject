@@ -82,12 +82,12 @@ namespace Project.UI.Areas.Manager.Controllers
             await _supplierService.MakeSupplierActiveAsync(id);
             return RedirectToAction("Index");
         }
-        public async Task<IActionResult> GetProducts(int id)
+        public async Task<IActionResult> GetProducts(int supplierId)
         {
-            SupplierDto supplierDto = await _supplierService.FindByIdAsync(id);
+            SupplierDto supplierDto = await _supplierService.FindByIdAsync(supplierId);
             ViewBag.companyName = supplierDto.Supplier.CompanyName;
-            ProductDto productDto = await _supplierService.GetProducts(id);
-            return View(productDto);
+            SupplierDto supplierProducts = await _supplierService.GetAllOrderedProductsFromSuppliersAsync(supplierId);
+            return View(supplierProducts);
         }
         public async Task<IActionResult> SupplierAct()
         {
@@ -96,12 +96,12 @@ namespace Project.UI.Areas.Manager.Controllers
         }
         public async Task<IActionResult> MonthlyOrderedProductsFromSupplier(int supplierId)
         {
-            SupplierDto orderedProducts = await _supplierService.OrderedProductsFromSuppliersAsync(supplierId);
+            SupplierDto orderedProducts = await _supplierService.GetMonthlyOrderedProductsFromSuppliersAsync(supplierId);
             return PartialView("SupplierProductsContentPartial", orderedProducts);
         }
         public async Task<IActionResult> AllOrderedProductsFromSupplier(int supplierId)
         {
-            SupplierDto allOrderedProducts = await _supplierService.AllOrderedProductsFromSuppliersAsync(supplierId);
+            SupplierDto allOrderedProducts = await _supplierService.GetAllOrderedProductsFromSuppliersAsync(supplierId);
             return PartialView("SupplierProductsContentPartial", allOrderedProducts);
         }
 

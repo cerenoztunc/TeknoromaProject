@@ -18,5 +18,6 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<bool> UpdateProductAsync(UpdateProductDto updateProductDto);
         Task<ProductDto> GetDeletedProductsAsync();
         Task<bool> MakeProductActive(int id);
+        Task<ProductDto> SortingProductsByStock();
     }
 }
