@@ -29,6 +29,7 @@ namespace Project.BLL.ManagerServices.Concretes
                 supplierDto.Message = "Herhangi bir tedarikçi bulunmamaktadır";
             return supplierDto;
         }
+        
         public async Task<bool> CreateSupplierAsync(AddSupplierDto addSupplierDto)
         {
             List<Supplier> suppliers = UnitOfWork.Suppliers.GetActives();
@@ -101,6 +102,21 @@ namespace Project.BLL.ManagerServices.Concretes
             return productDto;
         }
 
-
+        public async Task<SupplierDto> OrderedProductsFromSuppliersAsync(int supplierId)
+        {
+            Supplier supplier = UnitOfWork.Suppliers.Find(supplierId);
+            List<Product> products = supplier.Products;
+            var monthlyOrderedProduct = products.Where(x=>x.CreatedDate.AddDays(30).Date > DateTime.Now).ToList();
+            SupplierDto supplierDto = new SupplierDto();
+            if (monthlyOrderedProduct.Count > 0)
+            {
+                supplierDto.Products = monthlyOrderedProduct;
+            }
+            else
+            {
+                supplierDto.Message = "Aylık hiçbir sipariş bulunmamaktadır.";
+            }
+            return supplierDto;
+        }
     }
 }

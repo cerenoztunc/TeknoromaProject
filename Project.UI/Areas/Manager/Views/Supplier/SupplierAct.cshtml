@@ -4,6 +4,7 @@
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
+<partial name="~/Areas/Manager/Views/Supplier/SupplierProductsPartial.cshtml" />
 <h3 class="mt-4">Tedarikçi Hareketi</h3>
 <table class="table table-bordered table-striped table-responsive">
     <thead>
@@ -41,18 +42,22 @@
                     <td>@item.ContactName</td>
                     <td>@item.Phone</td>
                     <td>
-                        <a class="btn btn-info" asp-area="Manager" asp-controller="Supplier" asp-action="MonthlyProductsList" asp-route-id="@item.Id">
+                        <button class="btn btn-primary" href="#!" data-toggle="modal" data-target="#orderedProductsModal" data-supplier-id="@item.Id"  id="showOrderedProductsModal">
                             Aylık Ürünler
-                        </a>
+                        </button>
                         
                     </td>
-                    @foreach (var product in item.Products)
-                    {
-                        
+                    @{ 
+                        var totalProducts = 0;
+                        foreach (var product in item.Products)
+                        {
+                            totalProducts += (product.UnitsOnOrder+product.UnitsInStock);
+                        }
                     }
+                    
                     <td>
                         
-                        @item.Products.Count
+                        @totalProducts
                     </td>
                 </tr>
             }
@@ -64,3 +69,24 @@
 </table>
 
 
+<script type="text/javascript">
+    /*  modal for show order details  */
+
+        $(function () {
+            $(document).on('click', "#showOrderedProductsModal", function (e) {
+                
+                var supplierId = $(this).attr('data-supplier-id');
+                console.log(supplierId);
+                $.ajax({
+                    type: 'GET',
+                    url: '/Manager/Supplier/OrderedProductsFromSupplier/',
+                    data: { supplierId },
+                    success: function (data) {
+                        $("#ordered-product-content").html(data);
+                    }
+                });
+
+            });
+        });
+
+</script>

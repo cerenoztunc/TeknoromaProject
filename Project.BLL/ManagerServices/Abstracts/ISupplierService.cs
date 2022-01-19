@@ -17,5 +17,6 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<SupplierDto> GetOldSuppliersAsync();
         Task MakeSupplierActiveAsync(int id);
         Task<ProductDto> GetProducts(int id);
+        Task<SupplierDto> OrderedProductsFromSuppliersAsync(int supplierId);
     }
 }

@@ -11,6 +11,7 @@ namespace Project.ENTITIES.DTOs
     {
         public Supplier Supplier { get; set; }
         public List<Supplier> Suppliers { get; set; } = new List<Supplier>();
+        public List<Product> Products { get; set; } = new List<Product>();
         public string Message { get; set; }
     }
 }

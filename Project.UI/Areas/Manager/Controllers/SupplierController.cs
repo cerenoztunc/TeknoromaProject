@@ -94,6 +94,11 @@ namespace Project.UI.Areas.Manager.Controllers
             SupplierDto supplierDto = await _supplierService.ListSupplierAsync();
             return View(supplierDto);
         }
+        public async Task<IActionResult> OrderedProductsFromSupplier(int supplierId)
+        {
+            SupplierDto orderedProducts = await _supplierService.OrderedProductsFromSuppliersAsync(supplierId);
+            return PartialView("SupplierProductsContentPartial", orderedProducts);
+        }
 
     }
 }
