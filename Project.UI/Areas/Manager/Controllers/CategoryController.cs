@@ -90,5 +90,13 @@ namespace Project.UI.Areas.Manager.Controllers
             
             return View(productDto);
         }
+        public async Task<IActionResult> GetPassiveProducts(int id)
+        {
+            CategoryDto categoryDto = await _categoryService.FindByIdAsync(id);
+            ViewBag.categoryName = categoryDto.Category.CategoryName;
+            ProductDto productDto = await _categoryService.GetPassiveProductsOfCategory(id);
+
+            return View(productDto);
+        }
     }
 }

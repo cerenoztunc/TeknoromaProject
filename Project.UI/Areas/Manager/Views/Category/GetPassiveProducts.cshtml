@@ -1,16 +1,16 @@
 ﻿@model ProductDto
 @{
-    ViewData["Title"] = "GetProducts";
+    ViewData["Title"] = "GetPassiveProducts";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="mt-4">@ViewBag.categoryName Adlı Kategoriye Ait Ürünler Listesi</h3>
+<h3 class="mt-4">@ViewBag.categoryName Kategorisine Ait Pasif Ürünler Listesi</h3>
 
 
 @if (Model.Message != null)
 {
     <div class="text-danger">
-        <p>@Model.Message</p>
+        <h2>@Model.Message</h2>
     </div>
 }
 else

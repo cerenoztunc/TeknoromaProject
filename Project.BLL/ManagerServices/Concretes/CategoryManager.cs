@@ -112,5 +112,17 @@ namespace Project.BLL.ManagerServices.Concretes
             };
             return productDto;
         }
+        public async Task<ProductDto> GetPassiveProductsOfCategory(int id)
+        {
+            Category category = UnitOfWork.Categories.Find(id);
+            List<Product> products = UnitOfWork.Products.GetPassives();
+            List<Product> productsOfCategory = products.Where(x => x.CategoryId == category.Id).ToList();
+            ProductDto productDto = new ProductDto();
+            if (productsOfCategory.Count == 0)
+                productDto.Message = "Bütün ürünlerin aktif olarak satışı yapılmaktadır.";
+            else
+                productDto.Products = productsOfCategory;
+            return productDto;
+        }
     }
 }

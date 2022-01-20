@@ -134,5 +134,19 @@ namespace Project.UI.Areas.Manager.Controllers
             ProductDto productDto = await _productService.SortingProductsByStock();
             return View(productDto);
         }
+        public async Task<IActionResult> ProductListReport(int? id)
+        {
+            CategoryDto categoryDto = new CategoryDto();
+            if(id == null)
+            {
+                categoryDto = await _categoryService.ListAsync();
+            }
+            else
+            {
+                categoryDto = await _categoryService.FindByIdAsync(id.Value);
+            }
+
+            return View(categoryDto);
+        }
     }
 }
