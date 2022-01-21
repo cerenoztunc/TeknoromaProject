@@ -208,7 +208,32 @@ namespace Project.BLL.ManagerServices.Concretes
             else
                 return false;
         }
-        
+        public async Task<AppUserDto> GetSalesOfAppUser(int userId)
+        {
+            AppUser user = await _userManager.FindByIdAsync(userId.ToString());
+            List<Order> orders =  UnitOfWork.OrderDetails.GetActives().Select(x=>x.Order).ToList();
+            List<Order> productsOfAppUser = orders.Where(x => x.AppUserId == userId).ToList();
+            AppUserDto appUserDto = new AppUserDto
+            {
+                Orders = productsOfAppUser
+            };
+            return appUserDto;
+        }
+        public async Task<AppUserAndSalesDto> GetAppUserAndSales()
+        {
+            List<AppUser> users = _userManager.Users.Where(x => x.Status == DataStatus.Inserted || x.Status == DataStatus.Updated).ToList();
+            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives();
+            List<Order> orders = orderDetails.Select(x => x.Order) as List<Order>;
+            
+            AppUserAndSalesDto appUserAndSalesDto = new AppUserAndSalesDto
+            {
+                AppUsers = users,
+                Orders = orders,
+                OrderDetails = orderDetails
+            };
+            return appUserAndSalesDto;
+        }
+
 
     }
 }

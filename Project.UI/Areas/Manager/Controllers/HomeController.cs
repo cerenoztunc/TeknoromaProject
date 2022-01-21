@@ -26,6 +26,7 @@ namespace Project.UI.Areas.Manager.Controllers
     {
         private readonly IAppUserService _userManager;
         private readonly IAppRoleService _roleManager;
+        private readonly IOrderDetailService _orderDetailService;
      
         public HomeController(IAppUserService userManager, IAppRoleService roleManager)
         {
@@ -179,7 +180,11 @@ namespace Project.UI.Areas.Manager.Controllers
             }
             else
                 return View(updateRoleViewModel);
-            
+        }
+        public async Task<IActionResult> SalesTrackingReport()
+        {
+            AppUserAndSalesDto appUserAndSalesDto = await _userManager.GetAppUserAndSales();
+            return View(appUserAndSalesDto);
         }
 
     }

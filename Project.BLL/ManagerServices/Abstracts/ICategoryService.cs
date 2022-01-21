@@ -16,7 +16,7 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task DeleteCategoryAsync(int id);
         Task<CategoryDto> GetDeletedCategorisAsync();
         Task MakeCategoryActiveAysnc(int id);
-        Task<ProductDto> GetProductsOfCategory(int id);
-        Task<ProductDto> GetPassiveProductsOfCategory(int id);
+        Task<ProductDto> GetProductsOfCategoryAsync(int id);
+        Task<ProductDto> GetPassiveProductsOfCategoryAsync(int id);
     }
 }

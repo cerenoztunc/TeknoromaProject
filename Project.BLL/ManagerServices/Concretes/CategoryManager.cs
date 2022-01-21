@@ -101,7 +101,7 @@ namespace Project.BLL.ManagerServices.Concretes
             category.Status = ENTITIES.Enums.DataStatus.Updated;
             await UnitOfWork.SaveAysnc();
         }
-        public async Task<ProductDto> GetProductsOfCategory(int id)
+        public async Task<ProductDto> GetProductsOfCategoryAsync(int id)
         {
             Category category = UnitOfWork.Categories.Find(id);
             List<Product> products = UnitOfWork.Products.GetActives();
@@ -112,7 +112,7 @@ namespace Project.BLL.ManagerServices.Concretes
             };
             return productDto;
         }
-        public async Task<ProductDto> GetPassiveProductsOfCategory(int id)
+        public async Task<ProductDto> GetPassiveProductsOfCategoryAsync(int id)
         {
             Category category = UnitOfWork.Categories.Find(id);
             List<Product> products = UnitOfWork.Products.GetPassives();

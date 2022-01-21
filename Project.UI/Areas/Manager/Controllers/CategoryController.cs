@@ -86,7 +86,7 @@ namespace Project.UI.Areas.Manager.Controllers
         {
             CategoryDto categoryDto = await _categoryService.FindByIdAsync(id);
             ViewBag.categoryName = categoryDto.Category.CategoryName;
-            ProductDto productDto = await _categoryService.GetProductsOfCategory(id);
+            ProductDto productDto = await _categoryService.GetProductsOfCategoryAsync(id);
             
             return View(productDto);
         }
@@ -94,7 +94,7 @@ namespace Project.UI.Areas.Manager.Controllers
         {
             CategoryDto categoryDto = await _categoryService.FindByIdAsync(id);
             ViewBag.categoryName = categoryDto.Category.CategoryName;
-            ProductDto productDto = await _categoryService.GetPassiveProductsOfCategory(id);
+            ProductDto productDto = await _categoryService.GetPassiveProductsOfCategoryAsync(id);
 
             return View(productDto);
         }

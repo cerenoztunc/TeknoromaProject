@@ -1,0 +1,75 @@
+﻿
+@model AppUserAndSalesDto
+@{
+    ViewData["Title"] = "SalesTrackingReport";
+    Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="mt-4">Çalışan Raporu</h3>
+<table class="table table-bordered table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>Adı</th>
+            <th>Soyadı</th>
+            <th>Toplam Satış Sayısı</th>
+            <th>Aylık Satış Kotası Durumu</th>
+            <th>Hakedilen Prim</th>
+            <th>Aylık Satılan Ürünler</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.AppUsers)
+        {
+            <tr>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td class="text-center">@item.Orders.Count Ürün</td>
+                @{
+                    decimal totalSellingPrice = 0;
+
+
+                    @foreach (var order in item.Orders)
+                    {
+
+                        var appUsersOrderDetails = order.OrderDetails.Where(x => x.OrderId == order.Id).ToList();
+
+                        var monthlySalesOfAppUsers = appUsersOrderDetails.Where(x => x.CreatedDate.AddDays(30).Date > DateTime.Now).ToList();
+
+                        @foreach (var appUsersOrder in monthlySalesOfAppUsers)
+                        {
+                            if (appUsersOrder.CreatedDate.AddDays(30).Date > DateTime.Now)
+                            {
+                                totalSellingPrice += appUsersOrder.UnitPrice;
+                            }
+                        }
+
+
+                    }
+                    if (totalSellingPrice > 10)
+                    {
+                        <td class="text-success text-large text-center"><i class="icon-ok-circle icon-2x"></i> @totalSellingPrice</td>
+                        <th class="text-center">@((totalSellingPrice - 10)*10/100)</th>
+
+                    }
+                    else
+                    {
+                        <td class="text-danger text-center text-large"><i class="icon-arrow-down"></i> @totalSellingPrice</td>
+                        <th class="text-center"><i class="icon-ban-circle icon-2x"></i></th>
+
+                    }
+
+                }
+                <td>
+                    <a class="btn btn-info" asp-area="Manager" asp-controller="Home" asp-action="GetSalesOfAppUser" asp-route-id="@item.Id">
+                        Aylık Satılan Ürünler
+                    </a>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+
+
+</table>

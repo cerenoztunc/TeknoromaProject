@@ -76,5 +76,6 @@ namespace Project.BLL.ManagerServices.Concretes{
             };
             return orderDetailDto;
         }
+        
     }
 }
