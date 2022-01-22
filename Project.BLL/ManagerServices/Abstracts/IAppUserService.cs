@@ -22,7 +22,8 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<List<AssignRoleDto>> FindUserRole(int id);
         Task<AppUserDto> GetDeletedUsersAsync();
         Task MakeUserActiveAysnc(int id);
-        Task<AppUserDto> GetSalesOfAppUser(int userId);
-        Task<AppUserAndSalesDto> GetAppUserAndSales();
+        Task<AppUserDto> GetSalesOfAppUserAsync(int userId);
+        Task<AppUserAndSalesDto> GetAppUserAndSalesAsync();
+        Task<AppUserAndSalesDto> GetMonthlySalesOfAppUserAsync(int userId);
     }
 }

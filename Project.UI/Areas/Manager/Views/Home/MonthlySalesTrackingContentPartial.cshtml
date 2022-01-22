@@ -1,0 +1,33 @@
+﻿@model AppUserAndSalesDto
+@{
+    if (Model.Message != null)
+    {
+        <tr class="gradeX">
+            <td>@Model.Message</td>
+        </tr>
+    }
+    else
+    {
+        List<Product> products = Model.OrderDetails.Select(x => x.Product).ToList();
+        List<Order> orders = Model.OrderDetails.Select(x => x.Order).ToList();
+
+        @foreach (Order order in Model.Orders)
+        {
+
+            foreach (var item in order.OrderDetails)
+            {
+                <tr class="gradeX">
+                    @{
+                        List<Product> sameProducts = products.Where(x => x.Id == item.ProductId).ToList();
+                        <td>@item.Product.ProductName</td>
+                        <td>@item.UnitPrice</td>
+                        <td>@sameProducts.Count</td>
+                    }
+                </tr>
+            }
+
+               
+         }
+
+    }
+}

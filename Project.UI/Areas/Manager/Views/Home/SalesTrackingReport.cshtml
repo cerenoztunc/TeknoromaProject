@@ -4,7 +4,7 @@
     ViewData["Title"] = "SalesTrackingReport";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
-
+<partial name="~/Areas/Manager/Views/Home/MonthlySalesTrackingReportPartial.cshtml" />
 <h3 class="mt-4">Çalışan Raporu</h3>
 <table class="table table-bordered table-striped table-responsive">
     <thead>
@@ -44,12 +44,11 @@
                             }
                         }
 
-
                     }
-                    if (totalSellingPrice > 10)
+                    if (totalSellingPrice > 10000)
                     {
-                        <td class="text-success text-large text-center"><i class="icon-ok-circle icon-2x"></i> @totalSellingPrice</td>
-                        <th class="text-center">@((totalSellingPrice - 10)*10/100)</th>
+                        <td class="text-success text-large text-center"><i class="icon-ok-circle"></i> @totalSellingPrice</td>
+                        <th class="text-center">@((totalSellingPrice - 10000)*10/100)</th>
 
                     }
                     else
@@ -58,18 +57,32 @@
                         <th class="text-center"><i class="icon-ban-circle icon-2x"></i></th>
 
                     }
-
                 }
                 <td>
-                    <a class="btn btn-info" asp-area="Manager" asp-controller="Home" asp-action="GetSalesOfAppUser" asp-route-id="@item.Id">
+                    <button class="btn btn-info" href="#!" data-toggle="modal" data-target="#monthlySalesOfAppUser" data-appuser-id="@item.Id" id="showMonthlySalesOfAppUserModal">
                         Aylık Satılan Ürünler
-                    </a>
+                    </button>
+                    
                 </td>
             </tr>
         }
-
-
     </tbody>
-
-
 </table>
+<script>
+    $(function () {
+        $(document).on('click', "#showMonthlySalesOfAppUserModal", function (e) {
+
+            var appUserId = $(this).attr('data-appuser-id');
+            console.log(appUserId);
+            $.ajax({
+                type: 'GET',
+                url: '/Manager/Home/GetMonthlySalesOfAppUser/',
+                data: { appUserId },
+                success: function (data) {
+                    $("#monthly-sales").html(data);
+                }
+            });
+
+        });
+    });
+</script>

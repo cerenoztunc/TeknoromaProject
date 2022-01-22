@@ -208,18 +208,46 @@ namespace Project.BLL.ManagerServices.Concretes
             else
                 return false;
         }
-        public async Task<AppUserDto> GetSalesOfAppUser(int userId)
+        public async Task<AppUserDto> GetSalesOfAppUserAsync(int userId)
         {
             AppUser user = await _userManager.FindByIdAsync(userId.ToString());
-            List<Order> orders =  UnitOfWork.OrderDetails.GetActives().Select(x=>x.Order).ToList();
-            List<Order> productsOfAppUser = orders.Where(x => x.AppUserId == userId).ToList();
+            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives();
+            List<Order> orders = orderDetails.Select(x=>x.Order).ToList();
+            List<Order> ordersOfAppUser = orders.Where(x => x.AppUserId == userId).ToList();
             AppUserDto appUserDto = new AppUserDto
             {
-                Orders = productsOfAppUser
+                Orders = ordersOfAppUser
             };
             return appUserDto;
         }
-        public async Task<AppUserAndSalesDto> GetAppUserAndSales()
+        public async Task<AppUserAndSalesDto> GetMonthlySalesOfAppUserAsync(int userId)
+        {
+            AppUser user = await _userManager.FindByIdAsync(userId.ToString());
+            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives();
+            List<Order> orders = orderDetails.Select(x => x.Order).ToList();
+            List<Order> monthlyOrders = orders.Where(x=>x.AppUserId == userId && x.CreatedDate.AddDays(30) > DateTime.Now ).ToList();
+            List<OrderDetail> monthlyOrderDetails = new List<OrderDetail>();
+
+            foreach (var item in monthlyOrders)
+            {
+                foreach (var orderDetail in item.OrderDetails)
+                {
+                    if (!item.OrderDetails.Contains(orderDetail))
+                    {
+                        monthlyOrderDetails.Add(orderDetail);
+                    }
+                    
+                }
+            }
+            AppUserAndSalesDto appUserAndSalesDto = new AppUserAndSalesDto
+            {
+                OrderDetails = monthlyOrderDetails,
+                Orders = monthlyOrders,
+            };
+            return appUserAndSalesDto;
+        }
+
+        public async Task<AppUserAndSalesDto> GetAppUserAndSalesAsync()
         {
             List<AppUser> users = _userManager.Users.Where(x => x.Status == DataStatus.Inserted || x.Status == DataStatus.Updated).ToList();
             List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives();
