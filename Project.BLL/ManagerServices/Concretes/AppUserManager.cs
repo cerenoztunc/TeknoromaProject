@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Project.ENTITIES.Enums;
+using MoreLinq;
 
 namespace Project.BLL.ManagerServices.Concretes
 {
@@ -40,10 +41,10 @@ namespace Project.BLL.ManagerServices.Concretes
             AppUser user = userDto.Adapt<AppUser>();
             if (userPicture == null)
             {
-                user.Picture ="/UserPicture/profile.jpg";
-                
+                user.Picture = "/UserPicture/profile.jpg";
+
                 IdentityResult addUserResult = await _userManager.CreateAsync(user, password);
-                
+
                 await AssignRoleAsync(userDto);
                 if (addUserResult.Succeeded)
                 {
@@ -64,9 +65,9 @@ namespace Project.BLL.ManagerServices.Concretes
                 }
                 return new DataResult<AddAppUserDto>(ResultStatus.Error, userDto);
             }
-            
+
         }
-        
+
         public async Task AssignRoleAsync(AddAppUserDto addUserDto)
         {
             AppUser appUser = addUserDto.Adapt<AppUser>();
@@ -81,8 +82,8 @@ namespace Project.BLL.ManagerServices.Concretes
         }
         public AppUserDto ListAppUserAsync()
         {
-            List<AppUser> users = _userManager.Users.Where(x=>x.Status == DataStatus.Inserted || x.Status == DataStatus.Updated).ToList();
-            
+            List<AppUser> users = _userManager.Users.Where(x => x.Status != DataStatus.Deleted).ToList();
+
             return new AppUserDto
             {
                 AppUsers = users,
@@ -100,7 +101,7 @@ namespace Project.BLL.ManagerServices.Concretes
         {
             var deletedUsers = _userManager.Users.Where(x => x.Status == ENTITIES.Enums.DataStatus.Deleted).ToList();
             AppUserDto appUserDto = new AppUserDto();
-            if(deletedUsers.Count > -1)
+            if (deletedUsers.Count > -1)
             {
                 appUserDto.AppUsers = deletedUsers;
             }
@@ -109,7 +110,7 @@ namespace Project.BLL.ManagerServices.Concretes
                 appUserDto.Message = "Herhangi bir eski çalışan bulunmamaktadır";
             }
             return appUserDto;
-            
+
         }
         public async Task MakeUserActiveAysnc(int id)
         {
@@ -161,7 +162,7 @@ namespace Project.BLL.ManagerServices.Concretes
                     {
                         await UploadImage.UploadImageAsync(userPicture, appUser);
                     }
-                    
+
                 }
                 else
                 {
@@ -191,7 +192,7 @@ namespace Project.BLL.ManagerServices.Concretes
                 appUser.Email = updateAppUserDto.Email;
                 appUser.ModifiedDate = DateTime.Now;
                 appUser.Status = ENTITIES.Enums.DataStatus.Updated;
-               
+
                 IdentityResult result = await _userManager.UpdateAsync(appUser);
                 if (result.Succeeded)
                 {
@@ -212,7 +213,7 @@ namespace Project.BLL.ManagerServices.Concretes
         {
             AppUser user = await _userManager.FindByIdAsync(userId.ToString());
             List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives();
-            List<Order> orders = orderDetails.Select(x=>x.Order).ToList();
+            List<Order> orders = orderDetails.Select(x => x.Order).ToList();
             List<Order> ordersOfAppUser = orders.Where(x => x.AppUserId == userId).ToList();
             AppUserDto appUserDto = new AppUserDto
             {
@@ -220,46 +221,63 @@ namespace Project.BLL.ManagerServices.Concretes
             };
             return appUserDto;
         }
-        public async Task<AppUserAndSalesDto> GetMonthlySalesOfAppUserAsync(int userId)
-        {
-            AppUser user = await _userManager.FindByIdAsync(userId.ToString());
-            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives();
-            List<Order> orders = orderDetails.Select(x => x.Order).ToList();
-            List<Order> monthlyOrders = orders.Where(x=>x.AppUserId == userId && x.CreatedDate.AddDays(30) > DateTime.Now ).ToList();
-            List<OrderDetail> monthlyOrderDetails = new List<OrderDetail>();
+        public async Task<List<UsersMonthlySalesDto>> GetMonthlySalesOfAppUserAsync(int userId)
+        {            
 
-            foreach (var item in monthlyOrders)
-            {
-                foreach (var orderDetail in item.OrderDetails)
-                {
-                    if (!item.OrderDetails.Contains(orderDetail))
-                    {
-                        monthlyOrderDetails.Add(orderDetail);
-                    }
-                    
-                }
-            }
-            AppUserAndSalesDto appUserAndSalesDto = new AppUserAndSalesDto
-            {
-                OrderDetails = monthlyOrderDetails,
-                Orders = monthlyOrders,
-            };
-            return appUserAndSalesDto;
+            var a = (from au in UnitOfWork.AppUsers.GetAll()
+                     join o in UnitOfWork.Orders.GetAll() on au.Id equals o.AppUserId
+                     join od in UnitOfWork.OrderDetails.GetAll() on o.Id equals od.OrderId
+                     where o.AppUserId == userId
+                     select new UsersMonthlySalesDto()
+                     {
+                         CreatedDate = od.CreatedDate,
+                         ProductId = od.ProductId,
+                         OrderId = od.OrderId,
+                         ProductName = od.Product.ProductName,
+                         UnitPrice = od.UnitPrice,
+                         TotalPrice = UnitOfWork.OrderDetails.Where(x=>x.ProductId == od.ProductId && x.Order.AppUserId == userId).Sum(x=>x.UnitPrice * x.Quantity),
+                         TotalQuantity = UnitOfWork.OrderDetails.Where(x=>x.ProductId == od.ProductId && x.Order.AppUserId == userId).Sum(x=>x.Quantity)
+                     }).DistinctBy(x=>x.ProductId).Where(x=>x.CreatedDate.AddDays(30) > DateTime.Now).ToList();
+            return a;
+
         }
 
-        public async Task<AppUserAndSalesDto> GetAppUserAndSalesAsync()
+        public async Task<List<AppUserAndSalesDto>> GetAppUserAndSalesAsync()
         {
-            List<AppUser> users = _userManager.Users.Where(x => x.Status == DataStatus.Inserted || x.Status == DataStatus.Updated).ToList();
-            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives();
-            List<Order> orders = orderDetails.Select(x => x.Order) as List<Order>;
-            
-            AppUserAndSalesDto appUserAndSalesDto = new AppUserAndSalesDto
+            List<AppUserAndSalesDto> appUserAndSalesDtos = new List<AppUserAndSalesDto>();
+            List<AppUser> appUsers = _userManager.Users.Where(x => x.Status != DataStatus.Deleted).ToList();
+
+            foreach (AppUser item in appUsers)
             {
-                AppUsers = users,
-                Orders = orders,
-                OrderDetails = orderDetails
-            };
-            return appUserAndSalesDto;
+                AppUserAndSalesDto appUserAndSalesDto = new AppUserAndSalesDto
+                {
+                    AppUserId = item.Id,
+                    FirstName = item.UserName,
+                    LastName = item.LastName
+                };
+
+                appUserAndSalesDtos.Add(appUserAndSalesDto);
+            }
+
+            return appUserAndSalesDtos;
+
+
+            //var a = (from au in UnitOfWork.AppUsers.GetAll()
+            //         join o in UnitOfWork.Orders.GetAll() on au.Id equals o.AppUserId
+            //         join od in UnitOfWork.OrderDetails.GetAll() on o.Id equals od.OrderId
+            //         select new AppUserAndSalesDto()
+            //         {
+            //             AppUserId = au.Id,
+            //             FirstName = au.FirstName,
+            //             LastName = au.LastName,
+            //             ProductId = od.ProductId,
+            //             OrderId = od.OrderId,
+            //             ProductName = od.Product.ProductName,
+            //             UnitPrice = od.UnitPrice,
+            //             TotalPrice = UnitOfWork.OrderDetails.Where(x => x.ProductId == od.ProductId).Sum(x => x.UnitPrice * x.Quantity),
+            //             TotalQuantity = UnitOfWork.OrderDetails.Where(x => x.ProductId == od.ProductId).Sum(x => x.Quantity)
+            //         }).ToList();
+            //return a;
         }
 
 

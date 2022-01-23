@@ -1,6 +1,7 @@
 ﻿using Project.DAL.Abstracts.Repositories;
 using Project.DAL.Context;
 using Project.ENTITIES.CoreInterfaces;
+using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

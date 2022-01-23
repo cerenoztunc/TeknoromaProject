@@ -9,10 +9,14 @@ namespace Project.ENTITIES.DTOs
 {
     public class AppUserAndSalesDto
     {
-        public List<AppUser> AppUsers { get; set; } = new List<AppUser>();
-        public List<Order> Orders { get; set; } = new List<Order>();
-        public List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
-        public string Message { get; set; }
-
+        public int AppUserId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int ProductId { get; set; }
+        public int OrderId { get; set; }
+        public int TotalQuantity { get; set; }
+        public decimal TotalPrice { get; set; }
+        public List<Order> OrdersOfUsers { get; set; }
+        public List<OrderDetail> OrderDetailsOfUsers { get; set; }
     }
 }

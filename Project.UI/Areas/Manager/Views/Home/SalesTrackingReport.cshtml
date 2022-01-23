@@ -1,5 +1,5 @@
 ﻿
-@model AppUserAndSalesDto
+@model List<AppUserAndSalesDto>
 @{
     ViewData["Title"] = "SalesTrackingReport";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
@@ -19,47 +19,40 @@
     </thead>
     <tbody>
 
-        @foreach (var item in Model.AppUsers)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>@item.FirstName</td>
                 <td>@item.LastName</td>
-                <td class="text-center">@item.Orders.Count Ürün</td>
-                @{
-                    decimal totalSellingPrice = 0;
 
+                @{ 
+                    var totalQuantity = 0;
+                    decimal totalPrice = 0;
+                }
+                @foreach (var orderDetail in item.OrderDetailsOfUsers)
+                {
+                    totalQuantity += orderDetail.Quantity;
+                    totalPrice += orderDetail.UnitPrice;
+                }
 
-                    @foreach (var order in item.Orders)
+                <td class="text-center">@totalQuantity Ürün</td>
+                
+
+                   @if (item.TotalPrice > 10000)
                     {
-
-                        var appUsersOrderDetails = order.OrderDetails.Where(x => x.OrderId == order.Id).ToList();
-
-                        var monthlySalesOfAppUsers = appUsersOrderDetails.Where(x => x.CreatedDate.AddDays(30).Date > DateTime.Now).ToList();
-
-                        @foreach (var appUsersOrder in monthlySalesOfAppUsers)
-                        {
-                            if (appUsersOrder.CreatedDate.AddDays(30).Date > DateTime.Now)
-                            {
-                                totalSellingPrice += appUsersOrder.UnitPrice;
-                            }
-                        }
-
-                    }
-                    if (totalSellingPrice > 10000)
-                    {
-                        <td class="text-success text-large text-center"><i class="icon-ok-circle"></i> @totalSellingPrice</td>
-                        <th class="text-center">@((totalSellingPrice - 10000)*10/100)</th>
+                        <td class="text-success text-large text-center"><i class="icon-ok-circle"></i>@totalPrice</td>
+                        <th class="text-center">@((totalPrice - 10000)*10/100)</th>
 
                     }
                     else
                     {
-                        <td class="text-danger text-center text-large"><i class="icon-arrow-down"></i> @totalSellingPrice</td>
+                        <td class="text-danger text-center text-large"><i class="icon-arrow-down"></i> @totalPrice</td>
                         <th class="text-center"><i class="icon-ban-circle icon-2x"></i></th>
 
                     }
-                }
+                
                 <td>
-                    <button class="btn btn-info" href="#!" data-toggle="modal" data-target="#monthlySalesOfAppUser" data-appuser-id="@item.Id" id="showMonthlySalesOfAppUserModal">
+                    <button class="btn btn-info" href="#!" data-toggle="modal" data-target="#monthlySalesOfAppUser" data-appuser-id="@item.AppUserId" id="showMonthlySalesOfAppUserModal">
                         Aylık Satılan Ürünler
                     </button>
                     

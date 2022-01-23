@@ -183,12 +183,12 @@ namespace Project.UI.Areas.Manager.Controllers
         }
         public async Task<IActionResult> SalesTrackingReport()
         {
-            AppUserAndSalesDto appUserAndSalesDto = await _userManager.GetAppUserAndSalesAsync();
+            List<AppUserAndSalesDto> appUserAndSalesDto = await _userManager.GetAppUserAndSalesAsync();
             return View(appUserAndSalesDto);
         }
         public async Task<IActionResult> GetMonthlySalesOfAppUser(int appUserId)
         {
-            AppUserAndSalesDto appUserAndSalesDto = await _userManager.GetMonthlySalesOfAppUserAsync(appUserId);
+            List<UsersMonthlySalesDto> appUserAndSalesDto = await _userManager.GetMonthlySalesOfAppUserAsync(appUserId);
             return PartialView("MonthlySalesTrackingContentPartial", appUserAndSalesDto);
         }
 

@@ -20,6 +20,7 @@ namespace Project.DAL.UnitOfWorks
         private SupplierRepository _supplierRepository;
         private AppUserRepository _appUserRepository;
         private ProductRepository _productRepository;
+        private OrderRepository _orderRepository;
         public UnitOfWork(MyContext db)
         {
             _db = db;
@@ -35,7 +36,7 @@ namespace Project.DAL.UnitOfWorks
 
         public IAppUserRepository AppUsers => _appUserRepository ??= new AppUserRepository(_db);
         public IProductRepository Products => _productRepository ??= new ProductRepository(_db);
-
+        public IOrderRepository Orders => _orderRepository ??= new OrderRepository(_db);
         public async ValueTask DisposeAsync()
         {
             await _db.DisposeAsync();

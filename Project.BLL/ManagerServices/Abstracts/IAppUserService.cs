@@ -23,7 +23,7 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<AppUserDto> GetDeletedUsersAsync();
         Task MakeUserActiveAysnc(int id);
         Task<AppUserDto> GetSalesOfAppUserAsync(int userId);
-        Task<AppUserAndSalesDto> GetAppUserAndSalesAsync();
-        Task<AppUserAndSalesDto> GetMonthlySalesOfAppUserAsync(int userId);
+        Task<List<AppUserAndSalesDto>> GetAppUserAndSalesAsync();
+        Task<List<UsersMonthlySalesDto>> GetMonthlySalesOfAppUserAsync(int userId);
     }
 }

@@ -15,6 +15,7 @@ namespace Project.DAL.UnitOfWorks
         ISupplierRepository Suppliers { get; }
         IAppUserRepository AppUsers { get; }
         IProductRepository Products { get; }
+        IOrderRepository Orders { get; }
         Task SaveAysnc();
     }
 }

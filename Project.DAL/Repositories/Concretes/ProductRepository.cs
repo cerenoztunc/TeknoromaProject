@@ -15,5 +15,7 @@ namespace Project.DAL.Repositories.Concretes
         {
 
         }
+
+        
     }
 }

@@ -26,6 +26,7 @@ namespace Project.BLL.ServiceInjection
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IAppUserRepository, AppUserRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             //UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //Validations
@@ -40,6 +41,7 @@ namespace Project.BLL.ServiceInjection
             services.AddScoped<ICategoryService, CategoryManager>();
             services.AddScoped<ISupplierService, SupplierManager>();
             services.AddScoped<IOrderDetailService, OrderDetailManager>();
+            services.AddScoped<IOrderService, OrderManager>();
 
             return services;
 

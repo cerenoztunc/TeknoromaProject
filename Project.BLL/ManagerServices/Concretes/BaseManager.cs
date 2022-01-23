@@ -14,5 +14,6 @@ namespace Project.BLL.ManagerServices.Concretes
         {
             UnitOfWork = unitOfWork;
         }
+
     }
 }
