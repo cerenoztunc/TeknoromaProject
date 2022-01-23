@@ -244,40 +244,20 @@ namespace Project.BLL.ManagerServices.Concretes
 
         public async Task<List<AppUserAndSalesDto>> GetAppUserAndSalesAsync()
         {
-            List<AppUserAndSalesDto> appUserAndSalesDtos = new List<AppUserAndSalesDto>();
-            List<AppUser> appUsers = _userManager.Users.Where(x => x.Status != DataStatus.Deleted).ToList();
-
-            foreach (AppUser item in appUsers)
-            {
-                AppUserAndSalesDto appUserAndSalesDto = new AppUserAndSalesDto
-                {
-                    AppUserId = item.Id,
-                    FirstName = item.UserName,
-                    LastName = item.LastName
-                };
-
-                appUserAndSalesDtos.Add(appUserAndSalesDto);
-            }
-
-            return appUserAndSalesDtos;
-
-
-            //var a = (from au in UnitOfWork.AppUsers.GetAll()
-            //         join o in UnitOfWork.Orders.GetAll() on au.Id equals o.AppUserId
-            //         join od in UnitOfWork.OrderDetails.GetAll() on o.Id equals od.OrderId
-            //         select new AppUserAndSalesDto()
-            //         {
-            //             AppUserId = au.Id,
-            //             FirstName = au.FirstName,
-            //             LastName = au.LastName,
-            //             ProductId = od.ProductId,
-            //             OrderId = od.OrderId,
-            //             ProductName = od.Product.ProductName,
-            //             UnitPrice = od.UnitPrice,
-            //             TotalPrice = UnitOfWork.OrderDetails.Where(x => x.ProductId == od.ProductId).Sum(x => x.UnitPrice * x.Quantity),
-            //             TotalQuantity = UnitOfWork.OrderDetails.Where(x => x.ProductId == od.ProductId).Sum(x => x.Quantity)
-            //         }).ToList();
-            //return a;
+            var a = (from au in UnitOfWork.AppUsers.GetAll()
+                     join o in UnitOfWork.Orders.GetAll() on au.Id equals o.AppUserId
+                     join od in UnitOfWork.OrderDetails.GetAll() on o.Id equals od.OrderId
+                     select new AppUserAndSalesDto()
+                     {
+                         AppUserId = au.Id,
+                         FirstName = au.FirstName,
+                         LastName = au.LastName,
+                         ProductId = od.ProductId,
+                         OrderId = od.OrderId,
+                         TotalPrice = UnitOfWork.Orders.Where(x => x.AppUserId == au.Id).SelectMany(x=>x.OrderDetails).Sum(x => x.UnitPrice * x.Quantity),
+                         TotalQuantity = UnitOfWork.Orders.Where(x => x.AppUserId == au.Id).SelectMany(x=>x.OrderDetails).Sum(x => x.Quantity)
+                     }).DistinctBy(x => x.AppUserId).ToList();
+            return a;
         }
 
 
