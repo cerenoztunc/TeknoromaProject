@@ -191,6 +191,11 @@ namespace Project.UI.Areas.Manager.Controllers
             List<UsersMonthlySalesDto> appUserAndSalesDto = await _userManager.GetMonthlySalesOfAppUserAsync(appUserId);
             return PartialView("MonthlySalesTrackingContentPartial", appUserAndSalesDto);
         }
+        public async Task<IActionResult> TopTenSellingProducts()
+        {
+            List<TopTenSellingProductsDto> topTenSellingProductsDtos = await _userManager.TopTenSellingProductsAsync();
+            return View(topTenSellingProductsDtos);
+        }
 
     }
 }

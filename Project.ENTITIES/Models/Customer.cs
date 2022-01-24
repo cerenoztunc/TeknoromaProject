@@ -21,6 +21,8 @@ namespace Project.ENTITIES.Models
         public string City { get; set; }
         public string Country { get; set; }
         public string PostalCode { get; set; }
+        public Gender Gender { get; set; }
+        public DateTime BirthDate { get; set; }
 
         public Customer()
         {

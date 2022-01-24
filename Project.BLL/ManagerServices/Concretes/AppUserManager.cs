@@ -259,6 +259,23 @@ namespace Project.BLL.ManagerServices.Concretes
                      }).DistinctBy(x => x.AppUserId).ToList();
             return a;
         }
+        public async Task<List<TopTenSellingProductsDto>> TopTenSellingProductsAsync()
+        {
+            var a = (from o in UnitOfWork.Orders.GetActives()
+                     join c in UnitOfWork.Customers.GetActives() on o.CustomerId equals c.Id
+                     join od in UnitOfWork.OrderDetails.GetActives() on o.Id equals od.OrderId
+                     join p in UnitOfWork.Products.GetActives() on od.ProductId equals p.Id
+                     join s in UnitOfWork.Suppliers.GetActives() on p.SupplierId equals s.Id
+                     select new TopTenSellingProductsDto()
+                     {
+                         ProductsQuantity = UnitOfWork.OrderDetails.Where(x => x.ProductId == od.ProductId).Sum(x => x.Quantity),
+                         ProductName = p.ProductName,
+                         CompanyName = s.CompanyName,
+                         BirthDatesAverage = (UnitOfWork.Customers.Select(x => x.BirthDate) as List<DateTime>).Average(x=> x.Year),
+                         Genders = UnitOfWork.Customers.Select(x => x.Gender) as List<Gender>
+                     }).OrderByDescending(x=>x.ProductsQuantity).Take(10).ToList();
+            return a;
+        }
 
 
     }

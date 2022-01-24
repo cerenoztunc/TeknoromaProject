@@ -25,5 +25,6 @@ namespace Project.BLL.ManagerServices.Abstracts
         Task<AppUserDto> GetSalesOfAppUserAsync(int userId);
         Task<List<AppUserAndSalesDto>> GetAppUserAndSalesAsync();
         Task<List<UsersMonthlySalesDto>> GetMonthlySalesOfAppUserAsync(int userId);
+        Task<List<TopTenSellingProductsDto>> TopTenSellingProductsAsync();
     }
 }

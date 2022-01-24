@@ -380,17 +380,22 @@
                         </ul>
                     </li>
                     <li class="sub-menu">
-                        <a asp-area="Manager" asp-controller="Product" asp-action="StockTrackingReport">
-                            <i class="icon-cogs"></i>
+                        <a href="javascript:;">
+                            <i class="icon-sitemap"></i>
                             <span>Raporlar</span>
                         </a>
                         <ul class="sub">
                             <li><a asp-area="Manager" asp-controller="Product" asp-action="StockTrackingReport">Stok Takip Raporu</a></li>
-                            <li><a asp-area="Manager" asp-controller="Home" asp-action="SalesTrackingReport">Satış Takip Raporu</a></li>
+                            <li class="sub-menu">
+                                <a asp-area="Manager" asp-controller="Home" asp-action="SalesTrackingReport">Satış Takip Raporu</a>
+                                <ul class="sub">
+                                    <li><a asp-area="Manager" asp-controller="Home" asp-action="TopTenSellingProducts">Çok Satılan 10 Ürün</a></li>
+                                    <li><a asp-area="Manager" asp-controller="Home" asp-action="SalesTrackingReport">Yanında Satılanlar</a> </li>
+                                </ul>
+                            </li>
                             <li><a asp-area="Manager" asp-controller="Supplier" asp-action="SupplierAct">Tedarikçi Hareket Raporu</a></li>
                             <li><a asp-area="Manager" asp-controller="Product" asp-action="ProductListReport">Ürün Liste Raporu</a></li>
                             <li><a asp-area="Manager" asp-controller="Outgoings" asp-action="OutgoingsReport">Gider Raporu</a></li>
-
                         </ul>
                     </li>
 
@@ -506,7 +511,7 @@
         </li>*@
                     <!--multi level menu end-->
                     <!-- Unnecessary side navbar components-->
-                </ul>
+                
                 <!-- sidebar menu end-->
             </div>
         </aside>
