@@ -10,7 +10,7 @@
     <thead>
         <tr>
             <th>Ürün Adı</th>
-            <th>Tedarikçi</th>
+            <th>Tedarikçi İşletme</th>
             <th>Yaş Ortalaması</th>
             <th>En Fazla Satın Alan Cinsiyet</th>
         </tr>
@@ -19,10 +19,11 @@
 
         @foreach (var item in Model)
         {
+            var year = DateTime.Now.Year - item.BirthDatesAverage;
         <tr>
             <td>@item.ProductName</td>
             <td>@item.CompanyName</td>
-            <td>@item.BirthDatesAverage</td>
+            <td>@year </td>
             @{
                 var femaleQuantity = 0;
                 var maleQuantity = 0;
@@ -32,11 +33,11 @@
                 {
                     femaleQuantity += 1;
                 }
-                else if (item.Genders.Contains(Gender.Male))
+                if (item.Genders.Contains(Gender.Male))
                 {
                     maleQuantity += 1;
                 }
-                else
+                if(item.Genders.Contains(Gender.Unspecified))
                 {
                     undefinedQuantity += 1;
                 }
@@ -62,6 +63,6 @@
 
 
         </tr>
-        }
+                }
     </tbody>
 </table>
