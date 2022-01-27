@@ -1,6 +1,6 @@
-﻿@model List<TopTenSellingsWithThemTheBestSellingsDto>
+﻿@model TopTenSellingsWithThemTheBestSellingsDto
 
-@foreach (var item in Model)
+@foreach (var item in Model.Products)
 {
     <tr class="gradeX">
         <td>@item.ProductName</td>

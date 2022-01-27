@@ -9,8 +9,6 @@ namespace Project.ENTITIES.DTOs
 {
     public class TopTenSellingsWithThemTheBestSellingsDto
     {
-        public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public decimal UnitPrice { get; set; }
+        public List<Product> Products { get; set; }
     }
 }

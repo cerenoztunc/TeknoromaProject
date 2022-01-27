@@ -278,19 +278,16 @@ namespace Project.BLL.ManagerServices.Concretes
                      }).DistinctBy(x=>x.ProductName).OrderByDescending(x => x.UnitsInOrder).Take(10).ToList();
             return a;
         }
-        public async Task<List<TopTenSellingsWithThemTheBestSellingsDto>> TopTenSellingsAndWithThemTheBestSellings(int orderId, int productId)
+        public async Task<TopTenSellingsWithThemTheBestSellingsDto> TopTenSellingsAndWithThemTheBestSellings(int orderId, int productId)
         {
             List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives().Where(x => x.OrderId == orderId).ToList();
-            List<Product> products = orderDetails.Select(x => x.Product).DistinctBy(x => x.ProductName).OrderByDescending(x => x.UnitsOnOrder).ToList();
-            TopTenSellingsWithThemTheBestSellingsDto topTenSellingsWithThemTheBestSellingsDto = new TopTenSellingsWithThemTheBestSellingsDto();
-            List<TopTenSellingsWithThemTheBestSellingsDto> topTenSellings = new List<TopTenSellingsWithThemTheBestSellingsDto>();
-            foreach (var item in products)
+            List<Product> products = orderDetails.Select(x => x.Product).OrderByDescending(x => x.UnitsOnOrder).Where(x=>x.Id!=productId).Take(10).DistinctBy(x => x.ProductName).ToList();
+            TopTenSellingsWithThemTheBestSellingsDto topTenSellingsWithThemTheBestSellingsDto = new TopTenSellingsWithThemTheBestSellingsDto
             {
-                topTenSellingsWithThemTheBestSellingsDto.ProductName = item.ProductName;
-                topTenSellingsWithThemTheBestSellingsDto.UnitPrice = item.UnitPrice;
-                topTenSellings.Add(topTenSellingsWithThemTheBestSellingsDto);
-            }
-            return topTenSellings;
+                Products = products
+            };
+            
+            return topTenSellingsWithThemTheBestSellingsDto;
 
             //var a = (from p in UnitOfWork.Products.GetAll()
             //         join od in UnitOfWork.OrderDetails.GetActives() on p.Id equals od.ProductId

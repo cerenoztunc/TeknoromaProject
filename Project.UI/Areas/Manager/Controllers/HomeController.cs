@@ -198,7 +198,7 @@ namespace Project.UI.Areas.Manager.Controllers
         }
         public async Task<IActionResult> GetTopTenSellingsWithThemTheBestSellings(int orderId, int productId)
         {
-            List<TopTenSellingsWithThemTheBestSellingsDto> topTenSellingsWithThemTheBestSellingsDtos = await _userManager.TopTenSellingsAndWithThemTheBestSellings(orderId, productId);
+            TopTenSellingsWithThemTheBestSellingsDto topTenSellingsWithThemTheBestSellingsDtos = await _userManager.TopTenSellingsAndWithThemTheBestSellings(orderId, productId);
             return PartialView("TopTenSellingsWithThemTheBestsContentPartial", topTenSellingsWithThemTheBestSellingsDtos);
         }
 
