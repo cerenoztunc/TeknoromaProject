@@ -268,14 +268,41 @@ namespace Project.BLL.ManagerServices.Concretes
                      join c in UnitOfWork.Customers.GetActives() on o.CustomerId equals c.Id
                      select new TopTenSellingProductsDto()
                      {
+                         OrderId = o.Id,
+                         ProductId = p.Id,
                          ProductName = p.ProductName,
                          UnitsInOrder = p.UnitsOnOrder,
                          CompanyName = s.CompanyName,
-                         Customers = UnitOfWork.Products.GetActives().SelectMany(x => x.OrderDetails).Where(x => x.ProductId == p.Id).Select(x => x.Order).Select(x => x.Customer).ToList(),
                          BirthDatesAverage = UnitOfWork.Products.GetActives().SelectMany(x => x.OrderDetails).Where(x => x.ProductId == p.Id).Select(x => x.Order).Select(x => x.Customer).Average(x=>x.BirthDate.Year),
                          Genders = UnitOfWork.Products.GetActives().SelectMany(x => x.OrderDetails).Where(x => x.ProductId == p.Id).Select(x => x.Order).Select(x => x.Customer).Select(x => x.Gender).ToList()
                      }).DistinctBy(x=>x.ProductName).OrderByDescending(x => x.UnitsInOrder).Take(10).ToList();
             return a;
+        }
+        public async Task<List<TopTenSellingsWithThemTheBestSellingsDto>> TopTenSellingsAndWithThemTheBestSellings(int orderId, int productId)
+        {
+            List<OrderDetail> orderDetails = UnitOfWork.OrderDetails.GetActives().Where(x => x.OrderId == orderId).ToList();
+            List<Product> products = orderDetails.Select(x => x.Product).DistinctBy(x => x.ProductName).OrderByDescending(x => x.UnitsOnOrder).ToList();
+            TopTenSellingsWithThemTheBestSellingsDto topTenSellingsWithThemTheBestSellingsDto = new TopTenSellingsWithThemTheBestSellingsDto();
+            List<TopTenSellingsWithThemTheBestSellingsDto> topTenSellings = new List<TopTenSellingsWithThemTheBestSellingsDto>();
+            foreach (var item in products)
+            {
+                topTenSellingsWithThemTheBestSellingsDto.ProductName = item.ProductName;
+                topTenSellingsWithThemTheBestSellingsDto.UnitPrice = item.UnitPrice;
+                topTenSellings.Add(topTenSellingsWithThemTheBestSellingsDto);
+            }
+            return topTenSellings;
+
+            //var a = (from p in UnitOfWork.Products.GetAll()
+            //         join od in UnitOfWork.OrderDetails.GetActives() on p.Id equals od.ProductId
+            //         join o in UnitOfWork.Orders.GetActives() on od.OrderId equals o.Id
+            //         where p.Id == productId
+            //         select new TopTenSellingsWithThemTheBestSellingsDto()
+            //         {
+            //             ProductName = p.ProductName,
+            //             UnitPrice = p.UnitPrice,
+            //         }).DistinctBy(x => x.ProductId).ToList();
+            //return a;
+
         }
 
 

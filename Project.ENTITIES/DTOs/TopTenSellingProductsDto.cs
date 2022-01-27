@@ -10,10 +10,11 @@ namespace Project.ENTITIES.DTOs
 {
     public class TopTenSellingProductsDto
     {
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
         public int UnitsInOrder { get; set; }
         public string ProductName { get; set; }
         public string CompanyName { get; set; }
-        public List<Customer> Customers { get; set; }
         public double BirthDatesAverage { get; set; }
         public List<Gender> Genders { get; set; }
     }

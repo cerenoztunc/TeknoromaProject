@@ -1,0 +1,9 @@
+﻿@model List<TopTenSellingsWithThemTheBestSellingsDto>
+
+@foreach (var item in Model)
+{
+    <tr class="gradeX">
+        <td>@item.ProductName</td>
+        <td>@item.UnitPrice</td>
+    </tr>
+}

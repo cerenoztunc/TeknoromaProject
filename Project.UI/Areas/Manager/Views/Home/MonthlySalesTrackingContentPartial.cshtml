@@ -1,24 +1,11 @@
 ﻿@model List<UsersMonthlySalesDto>
-@{
-    
-      
-        @foreach (var item in Model)
-        {
 
-
-           
-                <tr class="gradeX">
-                    @{
-                        <td>@item.ProductName</td>
-                        <td>@item.UnitPrice</td>
-                        <td>@item.TotalQuantity</td>
-                        <td>@item.TotalPrice</td>
-                    }
-                </tr>
-            
-
-               
-         }
-
-    
-}
+ @foreach (var item in Model)
+ {
+         <tr class="gradeX">
+                 <td>@item.ProductName</td>
+                 <td>@item.UnitPrice</td>
+                 <td>@item.TotalQuantity</td>
+                 <td>@item.TotalPrice</td>
+         </tr>
+  }

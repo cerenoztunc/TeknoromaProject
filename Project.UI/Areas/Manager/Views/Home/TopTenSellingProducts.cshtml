@@ -4,7 +4,7 @@
     ViewData["Title"] = "TopTenSellingProducts";
     Layout = "~/Areas/Manager/Views/Shared/_Layout.cshtml";
 }
-
+<partial name="~/Areas/Manager/Views/Home/TopTenSellingsWithThemTheBestSellingsPartial.cshtml" />
 <h3 class="mt-4">En Çok Satılan 10 Ürün ve Özellikleri</h3>
 <table class="table table-bordered table-striped table-responsive">
     <thead>
@@ -13,6 +13,7 @@
             <th>Tedarikçi İşletme</th>
             <th>Yaş Ortalaması</th>
             <th>En Fazla Satın Alan Cinsiyet</th>
+            <th>Yanında En Çok Satılan Ürünler</th>
         </tr>
     </thead>
     <tbody>
@@ -37,7 +38,7 @@
                 {
                     maleQuantity += 1;
                 }
-                if(item.Genders.Contains(Gender.Unspecified))
+                if (item.Genders.Contains(Gender.Unspecified))
                 {
                     undefinedQuantity += 1;
                 }
@@ -58,11 +59,35 @@
                 {
                     <td><i class="icon-female icon-male"></i> Kadın/Erkek</td>
                 }
+
             }
-
-
-
+            <td>
+                <button class="btn btn-info" href="#!" data-toggle="modal" data-target="#topTenSellingsWithThemTheBestSellings" asp-order-id="@item.OrderId" data-product-id="@item.ProductId" id="showTopTenSellingsWithThemTheBestSellingsModal">
+                Yanında En Çok Satılan Ürünler
+                </button>
+            </td>
+            
         </tr>
                 }
     </tbody>
 </table>
+
+<script>
+    $(function () {
+        $(document).on('click', "#showTopTenSellingsWithThemTheBestSellingsModal", function (e) {
+
+            var productId = $(this).attr('data-product-id');
+            var orderId = $(this).attr('asp-order-id');
+            console.log(productId);
+            $.ajax({
+                type: 'GET',
+                url: '/Manager/Home/GetTopTenSellingsWithThemTheBestSellings/',
+                data: { productId, orderId },
+                success: function (data) {
+                    $("#with-best-sellings").html(data);
+                }
+            });
+
+        });
+    });
+</script>

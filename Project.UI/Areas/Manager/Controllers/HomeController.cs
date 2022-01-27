@@ -196,6 +196,11 @@ namespace Project.UI.Areas.Manager.Controllers
             List<TopTenSellingProductsDto> topTenSellingProductsDtos = await _userManager.TopTenSellingProductsAsync();
             return View(topTenSellingProductsDtos);
         }
+        public async Task<IActionResult> GetTopTenSellingsWithThemTheBestSellings(int orderId, int productId)
+        {
+            List<TopTenSellingsWithThemTheBestSellingsDto> topTenSellingsWithThemTheBestSellingsDtos = await _userManager.TopTenSellingsAndWithThemTheBestSellings(orderId, productId);
+            return PartialView("TopTenSellingsWithThemTheBestsContentPartial", topTenSellingsWithThemTheBestSellingsDtos);
+        }
 
     }
 }
