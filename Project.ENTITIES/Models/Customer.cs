@@ -23,6 +23,7 @@ namespace Project.ENTITIES.Models
         public string PostalCode { get; set; }
         public Gender Gender { get; set; }
         public DateTime BirthDate { get; set; }
+        public string IdentityNumber { get; set; }
 
         public Customer()
         {
